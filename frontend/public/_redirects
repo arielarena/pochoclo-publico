@@ -1,0 +1,39 @@
+# SPA fallback: servir index.html para cualquier dirección que no sea un
+# archivo real, con código 200 (no 301, que cambiaría la dirección en la barra).
+#
+# POR QUÉ HACE FALTA. Pochoclo es una sola página con enrutamiento del lado del
+# cliente: el servidor no tiene un archivo para /buscar ni para
+# /titulo/pelicula/238, esas rutas las resuelve React una vez que la aplicación
+# ya está cargada. Sin esta regla, el hosting contesta su propio 404 a cualquier
+# pedido que no sea la raíz, y eso rompe DOS cosas distintas:
+#
+#   1. Todo enlace profundo compartido. Alguien manda la ficha de una película
+#      por WhatsApp, el que la recibe la abre, y el hosting no encuentra el
+#      archivo. La aplicación nunca llega a cargarse.
+#   2. Nuestra propia pantalla de 404 (paginas/PaginaNoEncontrada.jsx), que solo
+#      se ve si la aplicación está cargada.
+#
+# `vite preview` ya hace esto solo, así que en desarrollo el problema no se ve.
+# ------------------------------------------------------------------ www
+#
+# www.pochoclo.ar redirige al dominio pelado, que es el unico nombre canonico
+# del proyecto (DOMINIO_SITIO, las direcciones canonicas de useMetadatos, el
+# sitemap y el Open Graph usan todos pochoclo.ar sin www).
+#
+# NO ES COSMETICO NI SEO. Sin esto, www.pochoclo.ar sirve la pagina con un 200
+# y **nada funciona**: URL_FRONTEND es "https://pochoclo.ar" a secas, asi que
+# el CORS y los trustedOrigins del backend rechazan el origen con www y el
+# navegador bloquea todas las llamadas a la API. Buscar, iniciar sesion y las
+# listas fallan, y la consola culpa a CORS en vez de a la direccion, que es
+# donde nadie va a mirar.
+#
+# **NO SE PUEDE HACER DESDE ESTE ARCHIVO, y se probo.** `_redirects` de
+# Cloudflare Pages **solo hace coincidir por RUTA**, no por nombre de host: una
+# direccion completa como origen se acepta sin error y **no hace nada**, que es
+# el peor tipo de configuracion posible. Se resuelve con una Redirect Rule en
+# el panel de Cloudflare (Rules -> Redirect Rules), filtrando por hostname y
+# redirigiendo con `concat("https://pochoclo.ar", http.request.uri.path)` para
+# no perder el enlace profundo. Es un ajuste de panel que no vive en el repo.
+
+# --------------------------------------------------------- SPA fallback
+/*    /index.html   200

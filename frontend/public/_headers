@@ -1,0 +1,81 @@
+# Cabeceras que agrega Cloudflare Pages a las respuestas de pochoclo.ar.
+#
+# OJO CON EL ALCANCE: esto vale para el frontend y NADA MAS. api.pochoclo.ar no
+# pasa por Pages, va por el tunel hasta nuestro Express, asi que su HSTS lo pone
+# backend/src/middleware/hsts.js con la variable HSTS_MAX_AGE. Los dos lados hay
+# que moverlos juntos.
+#
+# POR QUE ACA Y NO EN EL PANEL DE CLOUDFLARE. El panel tiene su propio
+# interruptor de HSTS (SSL/TLS -> Edge Certificates) y hace lo mismo. Se eligio
+# el archivo porque queda versionado, comentado, y con una sola fuente de
+# verdad: un ajuste puesto a mano en un panel no aparece en ningun diff y nadie
+# se acuerda de que existe. **Si algun dia se enciende el del panel, hay dos
+# lugares diciendo cosas distintas.**
+#
+# HSTS ES DIFICIL DE DESHACER, y de ahi la escalera. Le dice al navegador que
+# durante N segundos no use HTTP para este dominio pase lo que pase; si algo se
+# rompe, el visitante NO puede saltear el aviso y hay que esperar a que venza lo
+# que ya recibio. Por eso se sube de a poco, confirmando en cada paso:
+#
+#   1. max-age=3600       una hora        (2026-08-30)
+#   2. max-age=86400      un dia          (2026-08-30, cinco dias estable)
+#   3. max-age=31536000   un ano, con includeSubDomains  <- ACA ESTAMOS (2026-09-04)
+#
+# NO SE VA A AGREGAR `preload`, y no es un olvido: entrar en la lista de
+# precarga de los navegadores es casi irreversible (salir tarda meses y viaja
+# con las versiones del navegador). Para un sitio que corre en una notebook de
+# casa, el riesgo de quedar clavado no compensa lo que agrega, que es cubrir
+# solo la primerisima visita de alguien que nunca entro.
+#
+# ------------------------------------------------------- Otras cabeceras
+#
+# `frame-ancestors 'none'` NO se puede declarar por <meta> (los navegadores
+# la ignoran ahi a proposito), asi que la CSP real del sitio queda repartida
+# en dos lugares: el grueso por <meta> en index.html (vite.config.js,
+# cspDeProduccion), y esta directiva sola por cabecera. Un navegador que
+# recibe CSP de las dos fuentes aplica lo mas restrictivo de cada directiva,
+# asi que no hace falta duplicar la politica entera aca — agregar el resto
+# aca tambien queda como mejora, no como bloqueante, porque haria falta
+# generar este archivo en el build (la politica
+# incluye VITE_API_URL, que es dinamica) en vez de escribirlo a mano.
+#
+# `X-Content-Type-Options: nosniff` NO está acá a propósito: Cloudflare
+# Pages ya la manda sola, verificado en la cabecera real de pochoclo.ar.
+# Agregarla acá sería
+# redundante.
+#
+# `Permissions-Policy` apaga camara, microfono y geolocalizacion: el sitio no
+# usa ninguno de los tres, asi que declararlo cierra la puerta aunque nunca
+# se haya abierto.
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: frame-ancestors 'none'
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# ---------------------------------------------------------------- Caché
+#
+# Sin ninguna regla acá, Cloudflare Pages sirve TODO con
+# `Cache-Control: public, max-age=14400, must-revalidate` (4 horas) —
+# verificado en vivo. Para `/assets/*` eso es más corto de lo que hace falta:
+# Vite les pone un hash del contenido en el nombre (`index-BOFCMCh_.js`), así
+# que son inmutables por construcción — si el contenido cambia, cambia el
+# nombre de archivo, nunca el contenido bajo el mismo nombre. Cualquier
+# visitante que vuelve después de esas 4 horas revalida ~149 kB de JS que no
+# pudo haber cambiado.
+#
+# `/fuentes/*` es distinto A PROPÓSITO, y la diferencia importa: esos
+# archivos NO llevan hash (Vite los copia tal cual desde `public/fuentes/`,
+# verificado: mismo nombre en `public/` y en `dist/`), así que si alguna vez
+# se reemplaza el contenido de un archivo sin cambiarle el nombre — no pasó
+# todavía; el cambio de Fraunces a Work Sans usó nombres de archivo
+# distintos por tipografía — un año de `immutable` dejaría a quien ya lo
+# tenía cacheado sin enterarse. Por eso acá el número es un mes y sin
+# `immutable`, no un año: sigue siendo una mejora enorme sobre las 4 horas de
+# hoy, sin asumir una promesa que el nombre de archivo no puede sostener.
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fuentes/*
+  Cache-Control: public, max-age=2592000

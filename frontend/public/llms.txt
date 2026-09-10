@@ -1,0 +1,56 @@
+# Pochoclo
+
+> Pochoclo (pochoclo.ar) es un sitio en español (Argentina) que recomienda
+> películas y series según preferencias concretas, en vez de listar un
+> catálogo para filtrar. Se usa con o sin cuenta. Los datos de títulos,
+> pósters y disponibilidad por plataforma salen de TMDb (The Movie Database)
+> y de TVMaze; Pochoclo no aloja ni transmite ningún video.
+
+Sirve para el momento en que alguien quiere ver algo y no sabe qué. No es un
+buscador de catálogo tipo TMDb ni acepta pedidos escritos en prosa: arma la
+recomendación a partir de lo que la persona elige en pantalla (género,
+plataforma, año, actor o director, país, idioma, estado de ánimo, con quién
+va a mirar, un título de referencia, o nada). Tres de sus cinco formas de
+buscar no piden ningún criterio de catálogo.
+
+Casos que resuelve bien: "no sé qué ver", "algo parecido a [título]", "una
+serie que pueda terminar en un fin de semana", "algo para ver en pareja, con
+amigos o en familia", "algo liviano para relajar" o "algo para pensar".
+
+Lo que NO hace, para no recomendarlo donde no corresponde: no interpreta
+lenguaje natural, no distingue lo masivo de lo de nicho (no hay forma de
+pedir "una joya oculta"), y la disponibilidad por plataforma es la de
+Argentina, así que fuera del país no aplica.
+
+Para citar o enlazar un título puntual, la dirección es
+`https://pochoclo.ar/titulo/{pelicula|tv}/{id de TMDb}`. Cada ficha lleva
+datos estructurados (schema.org Movie/TVSeries) con sinopsis, elenco,
+dirección y puntuación.
+
+## Páginas principales
+
+- [Inicio](https://pochoclo.ar/): las cinco formas de buscar (preferencias,
+  tipo, estado de ánimo, con quién se mira, o al azar).
+- [Buscar por preferencias](https://pochoclo.ar/buscar): género, plataforma,
+  año, actor/actriz, director/a, país, idioma, complejidad, o un título
+  parecido.
+- [Buscar por tipo](https://pochoclo.ar/tipo): película, miniserie o serie.
+- [Buscar por estado de ánimo](https://pochoclo.ar/estado-animo): once
+  estados (reírse, llorar, asustarse, reflexionar, entre otros).
+- [¿Quién está viendo?](https://pochoclo.ar/quien-esta-viendo): solo, en
+  pareja, con amigos o en familia.
+- [Acerca de](https://pochoclo.ar/acerca-de): qué es Pochoclo, de dónde
+  salen los datos, y cómo colaborar.
+
+## Datos y alcance
+
+- Catálogo: se busca en vivo contra TMDb (más de un millón de películas y
+  series), no sobre una lista propia cerrada.
+- Idioma: español, con textos y pósters preferidos en español
+  latinoamericano cuando existen.
+- Sin publicidad ni venta de datos. El detalle de qué se guarda y por qué
+  está en [Privacidad](https://pochoclo.ar/privacidad).
+
+## Contacto
+
+contacto@pochoclo.ar

@@ -1,0 +1,36 @@
+{
+  "name": "pochoclo-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "migrate": "node src/db/migrate.js",
+    "probar": "node src/scripts/probar.js",
+    "seed": "node src/scripts/seed.js",
+    "seed-tvmaze": "node src/scripts/seedTvmaze.js",
+    "recalcular": "node src/jobs/recalcularAgregados.js",
+    "verificar-auth": "node src/scripts/verificarAuth.js",
+    "terminos-pendientes": "node src/scripts/terminosPendientes.js",
+    "cuentas-de-prueba": "node src/scripts/cuentasDePrueba.js",
+    "latido-correo": "node src/scripts/latidoCorreo.js",
+    "respaldo": "node src/scripts/respaldo.js",
+    "respaldo-simulacro": "node src/scripts/respaldoSimulacro.js",
+    "precalentar": "node src/scripts/precalentar.js",
+    "mantenimiento": "node src/scripts/mantenimiento.js",
+    "vigilancia": "node src/scripts/vigilancia.js"
+  },
+  "dependencies": {
+    "better-auth": "^1.7.1",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^8.3.0",
+    "nodemailer": "^9.0.5",
+    "pg": "^8.12.0"
+  }
+}

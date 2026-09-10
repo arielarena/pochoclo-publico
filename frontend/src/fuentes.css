@@ -1,0 +1,153 @@
+/* Fuentes auto-alojadas.
+ *
+ * Antes esto era un <link> a fonts.googleapis.com en index.html. Se bajó a
+ * public/fuentes/ por tres motivos, en orden de importancia:
+ *
+ *  1. **Privacidad.** Cada visita le hacía llegar a Google la IP del usuario,
+ *     su User-Agent y el Referer de la página que estaba mirando, sin que
+ *     nadie se lo pidiera. Eso es exactamente el tipo de cosa que /privacidad
+ *     promete que no pasa, así que era una contradicción entre lo que la
+ *     página dice y lo que la página hace. (Un tribunal alemán lo consideró
+ *     una violación del GDPR en 2022 por ese mismo motivo.)
+ *  2. **Rendimiento.** El navegador ya no tiene que abrir conexión con dos
+ *     dominios más (googleapis y gstatic), ni resolver un CSS remoto antes de
+ *     enterarse de qué archivos bajar. Con los .woff2 en nuestro origen, los
+ *     dos que importan van precargados desde index.html.
+ *  3. **Que no dependa de nadie.** Si Google Fonts se cae o queda bloqueado
+ *     (pasa en varias redes corporativas y en países enteros), la tipografía
+ *     de la app no se cae con él.
+ *
+ * Los archivos salieron del propio Google Fonts (misma licencia SIL OFL, que
+ * permite auto-alojarlos sin condiciones). Son las versiones **variables**:
+ * un solo archivo cubre de 100 a 900, así que pesa menos que cuatro estáticas
+ * y de paso deja disponible cualquier peso intermedio.
+ *
+ * Un archivo por subconjunto de Unicode, igual que los sirve Google, y con su
+ * unicode-range: el navegador baja "latin-ext" solo si en la página aparece
+ * algún carácter que lo necesite. Para una app en español eso quiere decir
+ * casi nunca, pero en un catálogo de cine los títulos en polaco o checo
+ * aparecen, y así no se ven rotos.
+ *
+ * Para agregar o cambiar una fuente, ver "Fuentes" en frontend/README.md.
+ */
+
+@font-face {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/work-sans-latin-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/work-sans-latin-ext-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Work Sans";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/work-sans-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Work Sans";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/work-sans-latin-ext-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/inter-latin-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/inter-latin-ext-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Inter itálica. Se bajó el 2026-08-26, junto con el eslogan del pie.
+ *
+ * OJO CON POR QUÉ HACE FALTA EL ARCHIVO: sin él, pedir `font-style: italic`
+ * sobre Inter no da la itálica, da una OBLICUA SINTÉTICA, que es la recta
+ * inclinada por el navegador. No falla nada ni avisa nadie; simplemente se ve
+ * peor, y a tamaño chico se nota en las letras que en la itálica real cambian
+ * de forma y no solo de ángulo (la a, la e, la g). La sección 22 del
+ * Definitivo pide Inter Italic para el texto alternativo, así que la fuente
+ * tenía que existir de verdad.
+ *
+ * No va precargada en index.html, a diferencia de las dos rectas: la usa el
+ * eslogan del pie, que está al final de la página, así que llega a tiempo sin
+ * competirle el ancho de banda a lo que se ve primero. */
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/inter-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/inter-latin-ext-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/fraunces-latin-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/fraunces-latin-ext-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/fraunces-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fuentes/fraunces-latin-ext-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}

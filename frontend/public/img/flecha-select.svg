@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="#faf0de">
+  <!--
+    Flecha hacia abajo de los select, que la app dibuja por su cuenta porque
+    la nativa de Chrome queda pegada al borde derecho y no se puede correr (el
+    padding-right empuja el texto, no la flecha).
+
+    Es el MISMO triángulo que usa CampoNumero para bajar, así que las dos
+    flechas de la aplicación son la misma forma. Si se cambia una, cambiar la
+    otra.
+
+    El color va escrito acá y no se hereda: un SVG cargado como imagen de
+    fondo no ve el CSS de la página, así que currentColor no funcionaría.
+    #faf0de es el token de color crema. Al cambiar la paleta hay que tocarlo a
+    mano; es el precio de que no sea un icono inline.
+
+    OJO AL EDITAR ESTE COMENTARIO: un comentario XML NO puede contener dos
+    guiones seguidos. Con ellos adentro el archivo queda mal formado y el
+    navegador simplemente NO DIBUJA la imagen, sin ningún error en la consola
+    y sin fallar el build. Ya pasó una vez, por escribir el nombre de una
+    variable CSS acá adentro.
+  -->
+  <path d="M5 6 0 0h10z" />
+</svg>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      El icono va con ruta ABSOLUTA y con el MIME correcto. Antes decía
+      href="favicon.ico" (relativa) y type="image/icon" (que no es un tipo que
+      exista). La ruta relativa se resuelve contra la dirección actual, así que
+      en /titulo/pelicula/238 el navegador pedía
+      /titulo/pelicula/favicon.ico y se quedaba sin icono en toda ficha
+      compartida por enlace directo.
+    -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!--
+      apple-touch-icon.png (el isotipo con margen) alcanza para Google: su
+      propia documentación dice que también lee ese rel, no hace falta
+      declararlo ADEMÁS como "icon" genérico. Se probó agregarlo así el
+      2026-09-06 y Chrome, en un perfil sin el favicon.ico ya cacheado
+      (una ventana de incógnito nueva), elegía este PNG de 180px para la
+      PESTAÑA en vez del favicon.ico de arriba, que es justo lo que no
+      queríamos: achicaba el ícono de la pestaña con el margen pensado para
+      Google. Con un solo rel="apple-touch-icon", Chrome no lo compite con el
+      favicon.ico para la pestaña.
+    -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Color de la barra del navegador en móvil: el token --color-noche. -->
+    <meta name="theme-color" content="#150e1b" />
+    <!--
+      El eslogan está DUPLICADO A MANO acá y en src/config/sitio.js, que es de
+      donde lo toma el pie. Este archivo es estático y queda fuera del bundle
+      de React, así que no puede importar la constante. Al cambiarlo, tocar
+      los dos lados.
+
+      Lo mismo pasa, por el mismo motivo, con el DOMINIO de más abajo: las
+      direcciones de Open Graph tienen que ser absolutas (los crawlers no
+      resuelven relativas), así que pochoclo.ar está escrito a mano acá aunque
+      viva en DOMINIO_SITIO. Si el dominio final llegara a ser otro, hay que
+      tocar este archivo, public/robots.txt y public/sitemap.xml.
+
+      La pregunta "¿qué vemos esta noche?" salió del <title> para dejarle el
+      lugar al eslogan, y por eso abre la description: es la frase con la que
+      alguien busca esto, y el h1 del inicio la sigue usando igual.
+    -->
+    <title>Pochoclo: miralo a tu manera</title>
+    <meta
+      name="description"
+      content="¿Qué vemos esta noche? Pochoclo recomienda películas y series según tus gustos, con o sin cuenta. Miralo a tu manera."
+    />
+
+    <!--
+      TARJETA AL COMPARTIR UN ENLACE (Open Graph y Twitter Cards).
+
+      POR QUÉ ESTÁ ACÁ Y NO EN REACT: los crawlers de redes sociales
+      (facebookexternalhit, Twitterbot, LinkedIn, WhatsApp, Slack, Discord,
+      Telegram) NO ejecutan JavaScript. Leen el HTML de la primera respuesta y
+      nada más. Cualquier <meta> que ponga React desde el cliente les es
+      invisible, así que estos tienen que estar escritos en el HTML estático.
+
+      CONSECUENCIA A TENER PRESENTE: son los mismos para las 22 rutas. Compartir
+      la ficha de una película muestra la tarjeta de la marca, no la película.
+      Hacerlo por título exige una función de borde en el hosting que reescriba
+      estos tags antes de servir el HTML. Es lo que hacen las funciones de
+      frontend/functions/, que reescriben estas mismas etiquetas cuando quien
+      pide la página es un rastreador y no una persona.
+
+      La imagen es public/og.png: 1200x630, que es la proporción que las
+      plataformas recortan sin cortar nada (1.91:1).
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pochoclo" />
+    <meta property="og:title" content="Pochoclo: miralo a tu manera" />
+    <meta
+      property="og:description"
+      content="¿Qué vemos esta noche? Pochoclo recomienda películas y series según tus gustos, con o sin cuenta."
+    />
+    <meta property="og:url" content="https://pochoclo.ar/" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:image" content="https://pochoclo.ar/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Pochoclo. Miralo a tu manera." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pochoclo: miralo a tu manera" />
+    <meta
+      name="twitter:description"
+      content="¿Qué vemos esta noche? Pochoclo recomienda películas y series según tus gustos, con o sin cuenta."
+    />
+    <meta name="twitter:image" content="https://pochoclo.ar/og.png" />
+    <meta name="twitter:image:alt" content="Pochoclo. Miralo a tu manera." />
+
+    <!--
+      Datos estructurados. NO lleva LocalBusiness a propósito: Pochoclo no
+      tiene dirección, horario ni zona de atención, así que declararlo sería
+      afirmar algo falso. Lo que corresponde a un sitio como este es WebSite
+      (qué es y en qué idioma) y Organization (quién lo hace), que es lo que
+      Google usa para mostrar el nombre y el logo correctos.
+
+      Un <script type="application/ld+json"> es un bloque de datos, no un
+      script: el navegador nunca lo ejecuta, así que la CSP estricta de
+      vite.config.js (script-src 'self', sin unsafe-inline) no lo bloquea.
+      Verificado en el build, escuchando securitypolicyviolation.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://pochoclo.ar/#sitio",
+            "name": "Pochoclo",
+            "url": "https://pochoclo.ar/",
+            "inLanguage": "es-AR",
+            "description": "Pochoclo recomienda películas y series según tus gustos, con o sin cuenta.",
+            "publisher": { "@id": "https://pochoclo.ar/#organizacion" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://pochoclo.ar/#organizacion",
+            "name": "Pochoclo",
+            "url": "https://pochoclo.ar/",
+            "email": "contacto@pochoclo.ar",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://pochoclo.ar/isotipo.png",
+              "width": 256,
+              "height": 256
+            }
+          }
+        ]
+      }
+    </script>
+    <!--
+      Las fuentes son locales, no de Google (ver src/fuentes.css para el
+      porqué). Se precargan solo los dos archivos que TODA pantalla usa: el
+      subconjunto latino de la fuente de títulos y el de la de cuerpo. El
+      resto (latin-ext, itálicas) los pide el navegador solo si hacen falta,
+      que es lo que hace el unicode-range de cada @font-face.
+
+      El preload existe porque si no, el navegador recién se entera de qué
+      .woff2 bajar después de parsear el CSS; así arranca las dos descargas
+      en paralelo con él.
+    -->
+    <link rel="preload" href="/fuentes/work-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fuentes/inter-latin-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!--
+      Preconnect al backend: arranca la resolución DNS y el handshake TLS
+      mientras el bundle todavía se está bajando/parseando, así el primer
+      fetch() no tiene que esperar esa negociación aparte.
+
+      DOMINIO DUPLICADO A MANO, mismo caso que el resto de este archivo (ver
+      el comentario de arriba sobre el eslogan y el dominio de Open Graph):
+      este archivo es estático y no puede importar DOMINIO_SITIO/VITE_API_URL.
+      Si el dominio del backend cambia, tocar acá también.
+
+      NO hay un preconnect a image.tmdb.org (el CDN de pósters) a propósito:
+      la CSP de vite.config.js solo lo declara en `img-src`, no en
+      `connect-src`, y el comportamiento de los navegadores ante un preconnect
+      a un origen fuera de `connect-src` es inconsistente (Firefox cae al
+      fallback de `default-src`, que tampoco lo incluye; hay un issue abierto
+      sin resolver en la spec de CSP para este caso). Agregarlo sin ampliar la
+      CSP quedaría bloqueado en al menos Firefox, y ampliar `connect-src` para
+      esto es una relajación de la política que no se tomó en esta sesión.
+    -->
+    <link rel="preconnect" href="https://api.pochoclo.ar" crossorigin />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

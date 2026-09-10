@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Grano de película. Se dibuja entero con un filtro SVG, sin ninguna imagen
+    de mapa de bits: feTurbulence genera ruido fractal por procedimiento, así
+    que este archivo pesa unos cientos de bytes y se ve nítido a cualquier
+    resolución.
+
+    Lo usa `body::before` en src/index.css, con opacidad 0.05 y una baldosa de
+    180px. `stitchTiles="stitch"` es lo que hace que los bordes del ruido
+    empalmen con la baldosa vecina; sin eso se ve la cuadrícula.
+
+    Estuvo incrustado como data: URI dentro del CSS hasta el 2026-08-25. Se
+    sacó a un archivo por dos motivos: para que la Content-Security-Policy no
+    tenga que permitir el esquema `data:` en img-src, y porque una cadena
+    codificada con %3C en el medio del CSS es imposible de editar.
+  -->
+  <filter id="n">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+  </filter>
+  <rect width="100%" height="100%" filter="url(#n)" />
+</svg>

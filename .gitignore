@@ -1,0 +1,17 @@
+node_modules/
+
+.env
+.env.local
+.env.*.local
+
+dist/
+
+respaldos/
+*.json.gz
+
+.claude/
+
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/

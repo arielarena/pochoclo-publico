@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Las nueve direcciones públicas de Pochoclo.
+
+  NO LLEVA LAS FICHAS de título, y no es un olvido: /titulo/:tipo/:id se
+  resuelve contra TMDb en vivo, que son ~1.400.000 títulos. No hay una lista
+  estática que enumerar acá, y un sitemap de ese tamaño habría que generarlo
+  y partirlo en archivos de 50.000. Google llega igual a las fichas siguiendo
+  los enlaces de los resultados.
+
+  <lastmod> se mantiene a mano: al tocar el contenido de una pantalla, mover
+  su fecha.
+
+  LAS NUEVE FECHAS DE ABAJO SE RECONSTRUYERON EL 2026-09-04 leyendo `git log`
+  archivo por archivo, porque habían quedado atrasadas (todas en 2026-08-26,
+  la fecha del commit que creó este archivo, sin moverse nunca después). La
+  regla para la próxima vez: la fecha es la del último commit que cambió
+  TEXTO VISIBLE de esa pantalla, no cualquier commit que haya tocado el
+  archivo — un cambio de lógica interna (por ejemplo, el precalentado del
+  cliente) no cuenta. Para /privacidad, /terminos y /accesibilidad
+  además tiene que coincidir con FECHA_ACTUALIZACION de
+  frontend/src/config/sitio.js, que es la fecha que esas tres páginas
+  muestran de verdad en pantalla (es una sola constante compartida, no una
+  por página).
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://pochoclo.ar/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/buscar</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/tipo</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/estado-animo</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/quien-esta-viendo</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/acerca-de</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/privacidad</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/terminos</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://pochoclo.ar/accesibilidad</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

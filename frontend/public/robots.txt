@@ -1,0 +1,33 @@
+# Pochoclo. Qué puede recorrer un buscador.
+#
+# Lo que queda afuera es de dos clases y por dos motivos distintos:
+#
+#  - Las pantallas de cuenta y las privadas (/perfil, /listas/..., etc.) no
+#    tienen nada que indexar: sin sesión redirigen, y con sesión son datos de
+#    una persona. /restablecer-contrasena, además, lleva un token de un solo
+#    uso en la dirección, así que no queremos que ningún crawler lo pida.
+#  - /resultados no existe como dirección con contenido propio: lo que muestra
+#    sale del estado con el que se llegó, así que pedirla sola da una pantalla
+#    vacía.
+#
+# OJO: el match es por PREFIJO. "Disallow: /terminos/aceptar" no bloquea
+# /terminos, que sí tiene que ser indexable.
+#
+# El dominio de la última línea está escrito a mano, igual que en index.html y
+# en sitemap.xml. Si el dominio final es otro, hay que tocar los tres.
+
+User-agent: *
+Allow: /
+
+Disallow: /resultados
+Disallow: /iniciar-sesion
+Disallow: /crear-cuenta
+Disallow: /recuperar-contrasena
+Disallow: /restablecer-contrasena
+Disallow: /terminos/aceptar
+Disallow: /perfil
+Disallow: /listas/
+Disallow: /mis-plataformas
+Disallow: /mis-gustos
+
+Sitemap: https://pochoclo.ar/sitemap.xml
