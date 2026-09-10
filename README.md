@@ -2,6 +2,8 @@
 
 _Miralo a tu manera_
 
+![Pochoclo](frontend/public/og.png)
+
 Aplicación web de recomendación de películas y series, usable con o sin cuenta. En producción: [pochoclo.ar](https://pochoclo.ar/)
 
 ## Qué problema resuelve
@@ -17,6 +19,8 @@ Hay cinco flujos de búsqueda distintos (no cinco filtros del mismo formulario),
 | “¿Quién está viendo?” | Solo, en pareja, con amigos, en familia                |
 | “Quiero…”             | Película, serie o miniserie                            |
 | Preferencias          | El formulario completo                                 |
+
+![El inicio: las cinco formas de buscar](capturas/inicio.png)
 
 Y “Me siento con suerte” en cualquier formulario, que devuelve un solo título.
 
@@ -48,6 +52,8 @@ Navegador ──► Cloudflare Pages (frontend estático + Functions en el borde
                                   TMDb                    PostgreSQL (Neon)
                               (en vivo)              (usuarios + caché)
 ```
+
+![Resultados personalizados, con el bloque "Por tus gustos"](capturas/resultados.png)
 
 El frontend y el backend se despliegan por separado y no dependen uno del otro para publicarse.
 
