@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { EMAIL_CONTACTO, ENLACE_DONACION } from '../config/sitio.js';
+import SeccionExtension from '../components/SeccionExtension.jsx';
 import useMetadatos from '../utils/useMetadatos.js';
 
 /**
@@ -40,6 +41,57 @@ export default function PaginaAcercaDe() {
             .
           </p>
         </section>
+
+        {/* ESTA SECCIÓN FALTABA, y su ausencia era el agujero más grande que
+            tenía la app para contarse. Hasta acá, el único lugar de todo el
+            sitio donde se explicaba qué agrega una cuenta era la propia
+            pantalla de crearla, o sea que había que haber decidido
+            registrarse para enterarse de para qué sirve. Y las listas, que
+            son lo más concreto que ofrece, son invisibles sin sesión, porque
+            el "+" de las tarjetas no se dibuja (ver components/../listas/
+            BotonListas.jsx, y es correcto que sea así).
+
+            Va después de "Qué es" y no antes, en ese orden a propósito. La
+            sección de arriba termina diciendo que el sitio se usa entero sin
+            cuenta, que es el principio del proyecto y no se toca; esta
+            cuenta la otra mitad sin contradecirla. */}
+        {/* EL `id` Y EL `scroll-mt-24` SON UN PAR Y VAN JUNTOS, mismo caso
+            que `#donaciones` acá abajo y que las dieciséis secciones de
+            `/privacidad`. Sin el margen de desplazamiento, el `h2` de destino
+            queda tapado por el encabezado pegajoso, que mide 73 px.
+
+            Quien entra desde el enlace del inicio llega con `#cuentas`, y de
+            eso se encarga `components/DesplazarAlNavegar.jsx`, porque el
+            router no desplaza a ningún fragmento por su cuenta (ver la 4.25 y
+            la 4.25.4 de las notas de decisiones del proyecto, donde eso ya falló dos veces). De paso el
+            destino recibe el foco, así que quien navega con teclado o con
+            lector de pantalla no se queda parado en el enlace de origen. */}
+        <section id="cuentas" className="scroll-mt-24">
+          <h2 className="titulo-seccion">Qué cambia con una cuenta</h2>
+          <p className="mt-2 leading-relaxed">
+            Nada de lo dicho previamente deja de funcionar si no tenés una. Sin embargo, la 
+            personalización se enriquece con una. Podés guardar títulos en tres listas, Favoritas, 
+            Visto y Ver más tarde, anotar a qué plataformas estás suscripto para no recibir 
+            recomendaciones que no podés mirar, y registrar tus gustos de géneros, años y si 
+            preferís películas o series.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            Con eso, las búsquedas que no te piden ningún criterio, como No sé qué ver y Quiero ver
+            una película, dejan de ser iguales para todo el mundo y suman secciones armadas con tus
+            gustos y con títulos parecidos a los que guardaste en Favoritas y Visto. Lo que marcás 
+            como Visto deja de aparecer en cualquier búsqueda, que es lo que evita que te recomendemos
+            por décima vez algo que ya viste.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            <Link to="/crear-cuenta" className="text-manteca underline underline-offset-4">
+              Crear una cuenta
+            </Link>{' '}
+            lleva un nombre, un correo, una contraseña y tu fecha de nacimiento, y se puede borrar
+            cuando quieras desde el perfil.
+          </p>
+        </section>
+
+        <SeccionExtension />
 
         {/* Las condiciones de uso de la API de TMDb piden que la atribución
             esté en la sección de "Acerca de" o de créditos, con su logo y con

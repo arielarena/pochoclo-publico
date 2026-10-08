@@ -15,12 +15,11 @@ import { listasDeComplejidad, GENEROS_AMBIVALENTES } from '../data/genres.js';
 export const UMBRAL_RATIO_CLASICO = 0.35;
 
 /**
- * Valor sintético que representa "Clásicos" dentro del array de Género,
- * tanto en Preferencias como en Filtros (sección 12). No es un ID de
- * género de TMDb: el motor lo traduce a búsquedas propias y los filtros lo
- * resuelven contra el campo calculado es_clasico.
+ * Valor sintético que representa "Clásicos" dentro del array de Género
+ * (sección 12). Vive en comun/resultados.js, junto con los filtros que lo
+ * resuelven, porque el frontend también lo necesita.
  */
-export const VALOR_GENERO_CLASICOS = 'CLASICOS';
+export { VALOR_GENERO_CLASICOS } from '../../../comun/resultados.js';
 
 /**
  * Sección 12 del Definitivo. Es clásico si cumple CUALQUIERA de los dos:

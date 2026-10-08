@@ -8,7 +8,7 @@ import { DOMINIO_SITIO } from '../config/sitio.js';
  * paginas/Ficha.jsx (para que Google, que ejecuta JavaScript, la vea) como
  * la Cloudflare Pages Function de functions/titulo/[[ruta]].js (para los
  * crawlers que NO ejecutan JavaScript, que son la mayoría de los de
- * asistentes de IA — ver las notas de decisiones del proyecto sección 4.23). Una sola función evita que
+ * asistentes de IA — ver sección 4.23). Una sola función evita que
  * las dos versiones se desincronicen con el tiempo.
  *
  * `aggregateRating` solo se manda si hay `vote_count`: sin cantidad de votos

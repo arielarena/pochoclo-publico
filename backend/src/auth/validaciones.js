@@ -4,6 +4,21 @@ import {
   esSecuenciaORepeticion,
 } from '../data/contrasenasComunes.js';
 import { anioDeNacimiento, edadCumplida } from '../logic/edad.js';
+/**
+ * Los números y el formato que el frontend tiene que usar idénticos viven en
+ * comun/cuenta.js desde el 2026-09-29. Antes estaban copiados a mano en los dos
+ * paquetes. Las explicaciones de cada valor siguen acá abajo, junto a donde se usan.
+ */
+import {
+  EDAD_MINIMA_CUENTA,
+  LARGO_MAXIMO_NOMBRE,
+  LARGO_MAXIMO_CORREO,
+  FORMATO_CORREO,
+  LARGO_MINIMO_CONTRASENA,
+  LARGO_MAXIMO_CONTRASENA,
+  LARGO_SIN_MEZCLA,
+  REGLAS_CONTRASENA,
+} from '../../../comun/cuenta.js';
 
 /**
  * Validación de los campos de la cuenta, del lado del servidor.
@@ -35,13 +50,13 @@ import { anioDeNacimiento, edadCumplida } from '../logic/edad.js';
  *
  * Es el mismo número que publica el punto 4 de los Términos y el que valida
  * el formulario de registro (frontend/src/utils/edad.js). Si se cambia acá,
- * cambiarlo en esos dos lugares.
+ * cambiarlo en el texto de los Términos (el valor en sí vive en comun/cuenta.js).
  *
  * Ojo con lo que esto NO significa: la app entera se sigue usando sin cuenta
  * y sin ninguna edad mínima, que es el uso por defecto (sección 1 del
  * Definitivo). Esto solo limita quién puede registrarse.
  */
-export const EDAD_MINIMA_CUENTA = 13;
+export { EDAD_MINIMA_CUENTA };
 
 /**
  * Fecha de nacimiento más antigua que se acepta. No es un filtro de gente,
@@ -51,8 +66,7 @@ export const EDAD_MINIMA_CUENTA = 13;
  */
 const ANIO_MINIMO_NACIMIENTO = 1900;
 
-/** Largo máximo del nombre. Es un saludo, no una biografía. */
-const LARGO_MAXIMO_NOMBRE = 60;
+/* LARGO_MAXIMO_NOMBRE (60) viene de comun/cuenta.js. Es un saludo, no una biografía. */
 
 /**
  * Largo máximo del correo, el de la norma: 254 caracteres (RFC 5321).
@@ -65,14 +79,9 @@ const LARGO_MAXIMO_NOMBRE = 60;
  * El daño no es solo el espacio: esa dirección viaja después a cada pantalla
  * que muestre el perfil, a los índices de la tabla, y a los respaldos.
  */
-const LARGO_MAXIMO_CORREO = 254;
+/* El valor, 254, viene de comun/cuenta.js. */
 
-/**
- * Mismo formato de correo que valida el frontend (frontend/src/utils/correo.js).
- * Está duplicado a mano y no compartido porque son dos paquetes separados sin
- * código común; si se cambia uno, cambiar el otro.
- */
-const FORMATO_CORREO = /^[^\s@.]+(\.[^\s@.]+)*@[^\s@.]+(\.[^\s@.]+)+$/;
+/* FORMATO_CORREO es el mismo que valida el frontend, y los dos lo importan de comun/cuenta.js. */
 
 /**
  * Caracteres de control (incluidos los de dirección bidireccional de
@@ -244,14 +253,14 @@ export function validarAceptacionTerminos(cruda) {
  * quien tipea con caracteres combinantes) y el modo de fallo es grave.
  */
 
-export const LARGO_MINIMO_CONTRASENA = 8;
+export { LARGO_MINIMO_CONTRASENA };
 
 /**
  * Tope de largo. No es seguridad, es no dejar que alguien nos haga hashear un
  * megabyte de texto en cada intento: scrypt cuesta CPU a propósito. El NIST
  * pide aceptar al menos 64, así que 128 lo cumple de sobra.
  */
-export const LARGO_MAXIMO_CONTRASENA = 128;
+export { LARGO_MAXIMO_CONTRASENA };
 
 /**
  * A partir de este largo NO se exige mezcla de tipos de carácter.
@@ -265,44 +274,19 @@ export const LARGO_MAXIMO_CONTRASENA = 128;
  * 16 es el umbral habitual para esto. Si algún día se quiere seguir la guía al
  * pie de la letra, alcanza con poner esta constante en
  * LARGO_MINIMO_CONTRASENA: la mezcla deja de pedirse nunca, y no hay que tocar
- * nada más ni acá ni en el frontend.
+ * nada más ni acá ni en el frontend (el valor vive en comun/cuenta.js).
  */
-export const LARGO_SIN_MEZCLA = 16;
+export { LARGO_SIN_MEZCLA };
 
 /**
  * Las reglas que el formulario muestra mientras se escribe.
  *
  * `cuandoAplica` es lo que permite que la lista del frontend se acorte sola:
  * al pasar los 16 caracteres, los tres requisitos de mezcla desaparecen en vez
- * de quedar tildados a medias. La copia del cliente está en
- * frontend/src/utils/contrasena.js; si se cambia una, cambiar la otra.
+ * de quedar tildados a medias. La lista vive en comun/cuenta.js, y el
+ * frontend la importa de ahí mismo para dibujarla.
  */
-export const REGLAS_CONTRASENA = [
-  {
-    clave: 'largo',
-    etiqueta: `Al menos ${LARGO_MINIMO_CONTRASENA} caracteres`,
-    cumple: (v) => v.length >= LARGO_MINIMO_CONTRASENA,
-    cuandoAplica: () => true,
-  },
-  {
-    clave: 'letra',
-    etiqueta: 'Una letra',
-    cumple: (v) => /\p{L}/u.test(v),
-    cuandoAplica: (v) => v.length < LARGO_SIN_MEZCLA,
-  },
-  {
-    clave: 'numero',
-    etiqueta: 'Un número',
-    cumple: (v) => /\p{N}/u.test(v),
-    cuandoAplica: (v) => v.length < LARGO_SIN_MEZCLA,
-  },
-  {
-    clave: 'especial',
-    etiqueta: 'Un símbolo (por ejemplo . , - _ ! ? @ #)',
-    cumple: (v) => /[^\p{L}\p{N}]/u.test(v),
-    cuandoAplica: (v) => v.length < LARGO_SIN_MEZCLA,
-  },
-];
+export { REGLAS_CONTRASENA };
 
 /** Las reglas que le corresponden a un valor dado, según su largo. */
 export function reglasQueAplican(valor) {

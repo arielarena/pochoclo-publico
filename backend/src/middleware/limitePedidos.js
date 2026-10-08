@@ -7,7 +7,7 @@ import { registroSeguridad } from '../auth/registroEventos.js';
  * el límite de Better Auth cubre `/api/auth/*` y nada más. Las rutas de
  * búsqueda quedaban completamente abiertas, y son las CARAS: una sola
  * llamada a POST /buscar puede disparar hasta 40 consultas a /discover más
- * 200 pedidos de detalle a TMDb (ver la sección 4.9.1 del las notas de decisiones del proyecto), y
+ * 200 pedidos de detalle a TMDb (ver la sección 4.9.1 de las notas de decisiones del proyecto), y
  * tarda entre 2,5 y 3 segundos. O sea que un script haciendo pedidos en
  * bucle no solo nos tira el servidor: nos gasta la cuota de la API de TMDb,
  * que es de un tercero y no la controlamos.

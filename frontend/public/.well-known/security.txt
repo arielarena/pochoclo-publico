@@ -1,0 +1,4 @@
+Contact: mailto:contacto@pochoclo.ar
+Expires: 2027-09-11T23:59:59.000Z
+Preferred-Languages: es, en
+Canonical: https://pochoclo.ar/.well-known/security.txt

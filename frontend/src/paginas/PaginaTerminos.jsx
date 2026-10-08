@@ -90,8 +90,9 @@ export default function PaginaTerminos() {
           <h2 className="titulo-seccion">1. Qué es esto y quién lo opera</h2>
           <p className="mt-2 leading-relaxed">
             Pochoclo ({DOMINIO_SITIO}) es un sitio de recomendación de películas y series, mantenido como
-            proyecto personal. Estos Términos son las reglas de uso del sitio. Al usarlo, las aceptás. Si
-            hay algo con lo que no estás de acuerdo, la salida es no usarlo.
+            proyecto personal. Estos Términos son las reglas de uso del sitio y de su extensión para Chrome,
+            que es opcional. Al usar cualquiera de los dos, las aceptás. Si hay algo con lo que no estás de
+            acuerdo, la salida es no usarlo.
           </p>
           {/*
             Artículo 4 de la Ley 24.240 y Resolución 104/2005: el proveedor

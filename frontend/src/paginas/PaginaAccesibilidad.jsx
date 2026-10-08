@@ -120,6 +120,52 @@ export default function PaginaAccesibilidad() {
           </p>
         </section>
 
+        {/*
+          LA EXTENSIÓN (2026-10-07). Cada viñeta está medida, y dónde: el
+          landmark, el estado marcado, la región viva, Escape y el foco, en
+          extension/probar-panel-listas.mjs; el tamaño de letra en `em`, el
+          ancho a 320 px, los 24x24 y el contraste, en las mediciones del panel,
+          que no forman parte de este repo. Lo que NO se hizo es probarla con un lector
+          de pantalla de verdad, y por eso el último párrafo lo dice.
+        */}
+        <section>
+          <h2 className="titulo-seccion">La extensión de Chrome</h2>
+          <p className="mt-2 leading-relaxed">
+            Todo lo anterior describe el sitio. La extensión de Chrome muestra un panel encima de la
+            plataforma de streaming, y la revisamos aparte, porque vive adentro de una página que no es
+            nuestra.
+          </p>
+          <ul className="mt-2 list-disc space-y-1.5 pl-5 leading-relaxed">
+            <li>
+              El panel es una región con nombre propio, "Pochoclo", así que con un lector de
+              pantalla se puede saltar a él sin recorrer toda la plataforma.
+            </li>
+            <li>
+              Los botones de Favoritas, Visto y Ver más tarde anuncian si están marcados, y lo marcado se
+              distingue también por una tilde, no solo por el color.
+            </li>
+            <li>Los avisos, como "Agregado a Favoritas", se anuncian en el momento en que aparecen.</li>
+            <li>
+              Se usa entero con teclado. Escape lo cierra cuando el foco está adentro, sin quitarle esa tecla
+              a la plataforma, y al cerrarlo el foco vuelve a donde estaba.
+            </li>
+            <li>
+              El texto respeta el tamaño de letra que elegiste en el navegador, y el panel entra entero con
+              el zoom al 400%.
+            </li>
+            <li>
+              Los botones miden al menos 24 por 24 píxeles, y el contraste del texto supera el mínimo de
+              4.5:1.
+            </li>
+          </ul>
+          <p className="mt-3 leading-relaxed">
+            Lo comprobamos sobre el árbol de accesibilidad, que es lo que el navegador le entrega a un lector
+            de pantalla, pero todavía no lo probamos con un lector de pantalla de verdad. Si usás uno y algo
+            del panel no se entiende, escribinos. Chrome no admite extensiones en teléfonos, así que la
+            extensión existe solo en computadora.
+          </p>
+        </section>
+
         <section>
           <h2 className="titulo-seccion">Limitaciones conocidas</h2>
           <p className="mt-2 leading-relaxed">

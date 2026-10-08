@@ -1,3 +1,5 @@
+import { EDAD_MINIMA_CUENTA, edadCumplida, anioDeNacimiento } from '../../../comun/cuenta.js';
+
 /**
  * Edad y franjas de la sección 17 del Definitivo.
  *
@@ -21,7 +23,7 @@
  * No confundir con un límite para usar la app: sin cuenta no hay ninguna
  * edad mínima, y ese es el uso por defecto.
  */
-export const EDAD_MINIMA_CUENTA = 13;
+export { EDAD_MINIMA_CUENTA };
 
 /**
  * LA FECHA DE NACIMIENTO ES UN DÍA DE CALENDARIO, Y SE LEE EN UTC. Vale para
@@ -47,38 +49,15 @@ export const EDAD_MINIMA_CUENTA = 13;
  * "Hoy", en cambio, SÍ va en local: es el día del calendario de quien está
  * mirando la pantalla.
  *
- * Espejo de backend/src/logic/edad.js, que es la que manda.
+ * Las dos funciones son las mismas que usa backend/src/logic/edad.js: viven en
+ * comun/cuenta.js.
  */
 
-/** Edad cumplida a día de hoy, o null si la fecha no sirve. */
-export function edadCumplida(fechaNacimiento) {
-  if (!fechaNacimiento) return null;
-  const nacimiento = new Date(fechaNacimiento);
-  if (Number.isNaN(nacimiento.getTime())) return null;
-
-  const hoy = new Date();
-  let edad = hoy.getFullYear() - nacimiento.getUTCFullYear();
-
-  /**
-   * Se comparan mes y día como números, en vez de armar la fecha del cumpleaños
-   * de este año: `new Date(anio, mes, dia)` con un 29 de febrero en un año no
-   * bisiesto se desborda al 1 de marzo, y de paso volvería a mezclar husos.
-   */
-  const meses = hoy.getMonth() - nacimiento.getUTCMonth();
-  if (meses < 0 || (meses === 0 && hoy.getDate() < nacimiento.getUTCDate())) edad -= 1;
-
-  return edad;
-}
-
-/**
- * El año de nacimiento tal como lo escribió la persona, o null si la fecha no
- * sirve. Lo usan los dos formularios para el piso de año.
+/*
+ * edadCumplida y anioDeNacimiento vienen de comun/cuenta.js, las mismas que
+ * usa el backend. Lo de arriba sigue valiendo para las dos.
  */
-export function anioDeNacimiento(fechaNacimiento) {
-  if (!fechaNacimiento) return null;
-  const nacimiento = new Date(fechaNacimiento);
-  return Number.isNaN(nacimiento.getTime()) ? null : nacimiento.getUTCFullYear();
-}
+export { edadCumplida, anioDeNacimiento };
 
 /** La franja que le corresponde a esa edad: 'ATP', '+14' o '+17'. */
 export function franjaDeEdad(edad) {

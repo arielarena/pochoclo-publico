@@ -103,10 +103,27 @@ export const ENLACE_DONACION =
   'https://link.mercadopago.com.ar/donacionespochoclo';
 
 /**
+ * ID DE LA EXTENSIÓN EN LA CHROME WEB STORE, los 32 caracteres que aparecen en
+ * la dirección de su ficha. En null mientras no esté publicada, y con eso la
+ * sección de la extensión en "Acerca de" no se dibuja, igual que el enlace de
+ * donaciones cuando no hay medio de pago. Pegando el ID acá aparece sola.
+ *
+ * Es el ID del ítem de la tienda, el mismo que calculan `chrome://extensions`
+ * y `extension/empaquetar.mjs` a partir del `key` del manifest. Si alguna vez
+ * cambia ese `key`, cambia el ID, y un ID que ninguna persona tiene instalado
+ * no hace fallar nada: la sección ofrecería instalarla siempre.
+ *
+ * Para que el sitio pueda hablarle, el manifest declara pochoclo.ar en
+ * `externally_connectable`, y lo único que acepta de acá está en
+ * `utils/extension.js`.
+ */
+export const ID_EXTENSION = 'llmocniicbbceghmhomohkcgnfndlodf';
+
+/**
  * Fecha que muestran las páginas legales. Actualizarla cuando se toque el
  * contenido de esas páginas, no en cada cambio de la app.
  */
-export const FECHA_ACTUALIZACION = '08/09/2026';
+export const FECHA_ACTUALIZACION = '07/10/2026';
 
 /**
  * Eslogan de la marca. Lo muestra el pie, en las 22 pantallas.

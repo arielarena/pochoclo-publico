@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Pochoclo | Recomendaciones en plataformas de streaming",
+  "version": "1.0.0",
+  "description": "Recomienda algo para ver en la plataforma de streaming en la que ya estás, con tu sesión de pochoclo.ar y tus listas.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzDHQg/jBPWddX9a41LRbX82sdYy4Ub2Ft0kCJP0kd1WBGrdupsXtN2aQgRNizZvbE8E90Vt7qozAWG1/jFMOR0A4iAS9uayomPG3omrQAHV7mhOzKPLwjsQF5k7SqFySS7m7byRZCymYp/ZIhx9ASyd64My7E4ZlhooqtA76Oz5k7AhTP5DKS4NSp3Ui+dMb4Q+MEJWP0jHCMZ9Ixkzpfy+uv07u7XS/4uD9UdY0jysygiWIBcJk4vyIir9aPt9k9SU0iQaGbIsdVNQdRweWzh7q/CF3lDVMA2uneFFsNl5WBl+XFUNl5OO4CvEW9hG6Eqr/C+uUC1TWcPVKM1uFPwIDAQAB",
+  "permissions": [
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.pochoclo.ar/*"
+  ],
+  "externally_connectable": {
+    "matches": ["https://pochoclo.ar/*"]
+  },
+  "optional_host_permissions": [
+    "https://*.netflix.com/*",
+    "https://*.primevideo.com/*",
+    "https://*.disneyplus.com/*",
+    "https://*.hbomax.com/*",
+    "https://*.max.com/*",
+    "https://*.tv.apple.com/*"
+  ],
+  "icons": {
+    "16": "iconos/16.png",
+    "32": "iconos/32.png",
+    "48": "iconos/48.png",
+    "128": "iconos/128.png"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_title": "Pochoclo | Recomendaciones en plataformas de streaming",
+    "default_icon": {
+      "16": "iconos/16.png",
+      "32": "iconos/32.png",
+      "48": "iconos/48.png",
+      "128": "iconos/128.png"
+    }
+  },
+  "options_ui": {
+    "page": "opciones.html",
+    "open_in_tab": true
+  }
+}

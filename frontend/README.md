@@ -29,7 +29,7 @@ npm run dev              # http://localhost:5173
 src/
   paginas/       una por ruta
   components/    reutilizables, incluidos los efectos visuales
-  utils/         espejo en cliente de los filtros del backend, caché corta
+  utils/         validaciones del formulario, caché corta, metadatos
   auth/          cliente de Better Auth, contexto de sesión
   api/           cliente HTTP
   config/        metadatos por pantalla, constantes del sitio
@@ -45,7 +45,7 @@ Tres reglas que no son de estilo sino de cómo sale ordenada la cascada, todas v
 
 1. Ningún `@utility` puede declarar `margin`. Las utilidades de margen de Tailwind salen antes en el CSS final, así que un margen declarado adentro no se podría sobrescribir desde el JSX. Los márgenes de layout van en el JSX.
 2. `ring-*` y `shadow-*` de Tailwind borran cualquier `box-shadow` de un `@utility`. Por eso el sistema usa `border` y no `ring`.
-3. Una clase mal escrita genera cero CSS y el build pasa limpio, sin ningún error. No hay red de seguridad del compilador. Si un encabezado pierde su clase, se pierde entero y en silencio.
+3. Una clase mal escrita genera cero CSS y el build pasa limpio, sin ningún error. No hay red de seguridad del compilador. Si un encabezado pierde su clase, se pierde entero y en silencio. Por eso existe `comprobar-clases.mjs`, que cruza cada clase del sistema usada en `src/` contra los `@utility` declarados y corta el build si encuentra una que no existe. También se corre sola con `npm run clases`.
 
 Los `hover:` propios van envueltos a mano en `@media (hover: hover)`. El de Tailwind lo hace solo; un `&:hover` crudo no, y en pantalla táctil el estado queda pegado después del tap.
 

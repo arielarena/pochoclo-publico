@@ -21,7 +21,7 @@ import Inicio from './paginas/Inicio.jsx';
  * cambia según la ruta.
  *
  * `Inicio` se sacó del lazy loading el mismo día que se agregó (ver el aviso
- * de arriba en las notas de decisiones del proyecto, sección 5): es la puerta de entrada casi universal
+ * de arriba en sección 5): es la puerta de entrada casi universal
  * del sitio (cualquiera que llega desde Google, un enlace compartido, o
  * escribiendo el dominio cae ahí primero), así que lazy-cargarla no ahorraba
  * nada en la práctica — su chunk se termina pidiendo en casi todas las

@@ -600,7 +600,7 @@ export async function discoverSeries(opciones) {
  * keywords por su cuenta, y es a propósito: el llamador decide (`voteCountGte`
  * queda en `undefined` si no se pasa). El recálculo de agregados depende de
  * ese comportamiento: muestrea el catálogo COMPLETO para estimar C, y
- * filtrar por votos ahí lo inflaría (sección 4.9.2 del las notas de decisiones del proyecto).
+ * filtrar por votos ahí lo inflaría (sección 4.9.2 de las notas de decisiones del proyecto).
  *
  * `generos`/`sinGeneros`/`keywords` se sumaron para `calibrarGenero.js`
  * (medición de qué tan relevante es un género respecto de otro dentro del

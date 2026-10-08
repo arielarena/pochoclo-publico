@@ -43,7 +43,7 @@ const PAGINA_MAXIMA_TMDB = 500;
  * Cuántos detalles se le piden a TMDb a la vez. Medido el 2026-08-21: 25 en
  * paralelo tardan 930 ms y 80 tardan lo mismo, así que TMDb no estaba
  * limitando y este número se podía subir. En su momento se dejó en 25
- * porque la escritura a Neon era el cuello de botella real (ver las notas de decisiones del proyecto
+ * porque la escritura a Neon era el cuello de botella real (ver
  * 4.13); desde que `guardarLote()` la bajó a una sola consulta por lote
  * (2026-09-01), el detalle-fetch volvió a ser el componente más pesado de
  * un lote grande. El 2026-09-02 se subió primero a 50 (valor intermedio,

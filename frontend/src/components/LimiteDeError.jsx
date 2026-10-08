@@ -56,7 +56,7 @@ export default class LimiteDeError extends Component {
       <PaginaError
         ilustracion="roto"
         titulo="Se nos cortó la película"
-        mensaje="Algo falló de nuestro lado al dibujar esta pantalla. No es culpa tuya y no perdiste ninguna lista: probá de nuevo, o volvé al inicio."
+        mensaje="Algo falló de nuestro lado al dibujar esta pantalla. No es culpa tuya y no perdiste ninguna lista. Probá de nuevo, o volvé al inicio."
         acciones={
           <>
             {/* Recargar y no un botón que limpie el estado: si el fallo es de

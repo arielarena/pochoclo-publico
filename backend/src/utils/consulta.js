@@ -1,3 +1,5 @@
+import { LARGO_MAXIMO_CONSULTA } from '../../../comun/busqueda.js';
+
 /**
  * Validación del texto libre que llega por query string.
  *
@@ -19,8 +21,12 @@
  * sería escapar dos veces y romper las búsquedas con acentos.
  */
 
-/** Más largo que el título más largo que existe, con margen de sobra. */
-const LARGO_MAXIMO = 120;
+/**
+ * Más largo que el título más largo que existe, con margen de sobra. Vive en
+ * comun/busqueda.js porque `frontend/src/listas/BuscadorParaAgregar.jsx`
+ * recorta antes de pedir con el mismo número.
+ */
+const LARGO_MAXIMO = LARGO_MAXIMO_CONSULTA;
 
 /**
  * Devuelve `{ valor }` con el texto limpio, o `{ error }` con un mensaje

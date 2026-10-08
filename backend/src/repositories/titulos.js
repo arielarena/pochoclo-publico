@@ -118,7 +118,7 @@ export async function guardarDetalle(detalle) {
  * Guarda un lote entero de títulos (upsert + clasificación + detalle) en
  * UNA sola consulta, con `jsonb_to_recordset`. Es lo que usa
  * `completarDetalle()` para las escrituras de una búsqueda — la misma
- * técnica que `scripts/seed.js` ya usaba para el seed masivo (ver las notas de decisiones del proyecto
+ * técnica que `scripts/seed.js` ya usaba para el seed masivo (ver
  * 4.9.2), aplicada acá porque en producción pesaba más que las llamadas a
  * TMDb que se estaban ahorrando.
  *

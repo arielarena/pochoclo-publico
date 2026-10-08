@@ -1,8 +1,10 @@
 import { defineConfig, loadEnv } from 'vite';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { clasesDelSistema } from './comprobar-clases.mjs';
 
 /**
  * Content Security Policy, inyectada en el HTML del build de producción.
@@ -258,9 +260,20 @@ export default defineConfig(({ command, mode }) => {
   if (command === 'build') comprobarUrlApi(urlApi, Boolean(env.VITE_API_URL));
 
   return {
-    plugins: [react(), tailwindcss(), cspDeProduccion(urlApi), sinComentariosEnLaSalida()],
+    /**
+     * clasesDelSistema corta el build si el JSX usa una clase del sistema de
+     * diseño que no está declarada (ver comprobar-clases.mjs).
+     */
+    plugins: [react(), tailwindcss(), clasesDelSistema(), cspDeProduccion(urlApi), sinComentariosEnLaSalida()],
     server: {
       port: 5173,
+      /**
+       * comun/ vive fuera de frontend/ (lo importa también el backend), y el
+       * servidor de desarrollo solo sirve la carpeta del proyecto salvo que se
+       * le diga otra cosa. Se habilita SOLO esa carpeta y no la raíz del repo,
+       * que tiene el .env del backend.
+       */
+      fs: { allow: ['.', fileURLToPath(new URL('../comun', import.meta.url))] },
     },
   };
 });

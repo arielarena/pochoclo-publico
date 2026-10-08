@@ -1,5 +1,6 @@
 import { createAuthClient } from 'better-auth/react';
 import { inferAdditionalFields } from 'better-auth/client/plugins';
+import { CODIGO_VALIDACION } from '../../../comun/cuenta.js';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -24,13 +25,10 @@ export const clienteAuth = createAuthClient({
   ],
 });
 
-/**
- * Código con el que el backend marca sus PROPIOS errores de validación (ver
- * CODIGO_VALIDACION en backend/src/auth/auth.js). Está duplicado a mano
- * porque no hay nada compartido entre las dos carpetas; si se cambia allá,
- * cambiarlo acá.
+/*
+ * CODIGO_VALIDACION, con el que el backend marca sus PROPIOS errores de
+ * validación, se importa arriba de comun/cuenta.js, que comparten las dos puntas.
  */
-const CODIGO_VALIDACION = 'VALIDACION_POCHOCLO';
 
 const MENSAJE_GENERICO = 'Algo salió mal. Probá de nuevo en un momento.';
 

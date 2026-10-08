@@ -29,6 +29,7 @@ import EnlaceVolver from '../components/EnlaceVolver.jsx';
 import { formatearLista } from '../utils/texto.js';
 import useMetadatos from '../utils/useMetadatos.js';
 import RegionViva from '../components/RegionViva.jsx';
+import { MAXIMO_PRIORIDADES, MAXIMO_REFERENCIAS } from '../../../comun/busqueda.js';
 
 const TIPOS = [
   { valor: 'pelicula', etiqueta: 'Película' },
@@ -50,25 +51,14 @@ const COMPLEJIDADES = [
  */
 
 /**
- * Tope de prioridades simultáneas. Cada una le cuesta al backend una
- * búsqueda entera (ver opciones/prioridades.js), y el mismo número está del
- * otro lado: acá se aplica antes, para que el formulario no deje marcar algo
- * que después se iba a recortar en silencio.
- */
-const MAXIMO_PRIORIDADES = 4;
-
-/**
- * Tope de títulos en "Parecido a". Mismo caso que el de arriba: el número
- * está DUPLICADO A MANO en `backend/src/opciones/parecidoA.js`
- * (MAXIMO_REFERENCIAS), donde vive el motivo medido, y acá se aplica antes
- * para que el formulario no deje cargar algo que el backend después iba a
- * recortar en silencio. Si se cambia uno, hay que cambiar el otro.
+ * MAXIMO_PRIORIDADES y MAXIMO_REFERENCIAS vienen de comun/busqueda.js, el
+ * mismo lugar de donde los lee el backend. Acá se aplican antes, para que el
+ * formulario no deje cargar algo que después se iba a recortar en silencio.
  *
- * Lo que hace falta saber acá: más de treinta referencias no traen ni un
+ * Lo que hace falta saber de las referencias: más de treinta no traen ni un
  * resultado más (el tope real es cuántos candidatos se detallan), y el atajo
  * de "usar mis favoritas" puede cargar la lista entera de alguien.
  */
-const MAXIMO_REFERENCIAS = 30;
 
 /**
  * Sección 6: el campo Año tiene dos modalidades y se usa una a la vez. El

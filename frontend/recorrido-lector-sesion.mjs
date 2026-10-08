@@ -10,6 +10,7 @@
 
 import { spawnSync } from 'node:child_process';
 import puppeteer from 'puppeteer-core';
+import { crearCuentaYEntrar } from './cuenta-de-prueba.mjs';
 import {
   buscarNavegador,
   arbol,
@@ -83,25 +84,8 @@ async function ir(ruta, espera = 1500) {
 // ---------------------------------------------------------------------------
 titulo('Alta de la cuenta descartable');
 
-await ir('/crear-cuenta', 800);
-await page.type('#nombre', CUENTA.nombre);
-await page.type('#correo', CUENTA.correo);
-await page.type('#contrasena', CUENTA.contrasena);
-await page.evaluate((fecha) => {
-  const campo = document.querySelector('#fecha-nacimiento');
-  const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-  setter.call(campo, fecha);
-  campo.dispatchEvent(new Event('input', { bubbles: true }));
-}, CUENTA.fechaNacimiento);
-await page.click('#acepto-terminos');
-await page.click('button[type="submit"]');
-await esperar(3000);
-if (page.url().includes('/crear-cuenta')) {
-  const motivo = await page.evaluate(
-    () => document.querySelector('[role="alert"]')?.textContent?.trim() ?? 'sin mensaje'
-  );
-  throw new Error(`No se pudo crear la cuenta: ${motivo}`);
-}
+await crearCuentaYEntrar(page, BASE, CUENTA);
+await espiarAnuncios(page);
 console.log(`   Cuenta creada (${CUENTA.nombre}).`);
 
 // ---------------------------------------------------------------------------

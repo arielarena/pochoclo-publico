@@ -23,6 +23,7 @@ import { pool } from '../config/db.js';
  *   node src/scripts/cuentasDePrueba.js
  *   node src/scripts/cuentasDePrueba.js --borrar
  *   node src/scripts/cuentasDePrueba.js --atrasar-terminos <correo>
+ *   node src/scripts/cuentasDePrueba.js --verificar <correo>
  */
 
 /**
@@ -33,12 +34,33 @@ const PREFIJOS = ['auditoria-', 'lector-', 'responsive-'];
 
 const BORRAR = process.argv.includes('--borrar');
 const iAtrasar = process.argv.indexOf('--atrasar-terminos');
+const iVerificar = process.argv.indexOf('--verificar');
 
 function patron() {
   return PREFIJOS.map((p) => `${p}%`);
 }
 
 async function main() {
+  if (iVerificar !== -1) {
+    /**
+     * Con EXIGIR_CORREO_VERIFICADO, el alta no abre sesión y el login contesta
+     * EMAIL_NOT_VERIFIED, así que una auditoría no puede entrar con su cuenta
+     * sin esto. Solo toca cuentas con prefijo de auditoría: marcar como
+     * verificada la dirección de una persona sería saltearle la confirmación.
+     */
+    const correo = process.argv[iVerificar + 1];
+    if (!correo) throw new Error('Falta el correo después de --verificar');
+    if (!PREFIJOS.some((p) => correo.startsWith(p))) {
+      throw new Error(`Solo se verifican cuentas de auditoría (${PREFIJOS.join(', ')}).`);
+    }
+    const { rowCount } = await pool.query(
+      'UPDATE "user" SET "emailVerified" = TRUE WHERE email = $1',
+      [correo]
+    );
+    console.log(rowCount === 1 ? 'Cuenta verificada.' : 'No encontré esa cuenta.');
+    return;
+  }
+
   if (iAtrasar !== -1) {
     /**
      * Para poder probar el aviso de re-aceptación hace falta una cuenta con la

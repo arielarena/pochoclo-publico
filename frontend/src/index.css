@@ -655,6 +655,23 @@ body::before {
       background-color: rgb(242 163 23 / 10%);
     }
   }
+
+  /* El estado marcado (las listas de la Ficha) vive acá y no en el JSX. Escrito
+     como bg-manteca en el JSX pesa (0,1,0) y el hover de arriba (0,3,0) le
+     pisaba el fondo, dejando texto noche sobre fondo casi noche. El hover
+     marcado oscurece a manteca-fuerte, que con noche encima mide 6.63:1. */
+  &[aria-pressed="true"] {
+    border-color: var(--color-manteca);
+    background-color: var(--color-manteca);
+    color: var(--color-noche);
+  }
+
+  @media (hover: hover) {
+    &[aria-pressed="true"]:hover:not(:disabled) {
+      border-color: var(--color-manteca-fuerte);
+      background-color: var(--color-manteca-fuerte);
+    }
+  }
 }
 
 /* Paso 1 del borrado de cuenta: discreto, no invita. */

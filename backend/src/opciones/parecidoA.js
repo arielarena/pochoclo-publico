@@ -6,6 +6,7 @@ import { VALOR_GENERO_CLASICOS } from '../logic/clasificacion.js';
 import { generosRecreablesEnSerie } from '../data/genres.js';
 import { cruzarDeTipo, intercalarPorAfinidad } from './cruceDeTipo.js';
 import { claveDe } from '../utils/clave.js';
+import { MAXIMO_REFERENCIAS } from '../../../comun/busqueda.js';
 
 /**
  * Si tras contar Coincidencias(t) quedan menos candidatos que esto, se
@@ -54,8 +55,10 @@ const MAXIMO_CANDIDATOS_A_DETALLAR = 60;
  * Se recorta en vez de rechazar, igual que MAXIMO_PRIORIDADES: el pedido
  * sigue funcionando y devuelve lo mismo. El caso real que motivó revisar
  * esto tenía 18 referencias cargadas a mano, así que ni lo toca.
+ *
+ * El valor (30) vive en comun/busqueda.js, porque el formulario de /buscar
+ * lo aplica antes con el mismo número.
  */
-const MAXIMO_REFERENCIAS = 30;
 
 /**
  * El mismo tope cuando el usuario pidió más resultados a propósito. Es más

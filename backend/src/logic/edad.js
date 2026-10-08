@@ -43,36 +43,12 @@ import {
  * llaman acá ya filtran el vacío antes, pero esta función es compartida y la
  * próxima puede no hacerlo.
  */
-export function edadCumplida(fechaNacimiento) {
-  if (!fechaNacimiento) return null;
-  const nacimiento = new Date(fechaNacimiento);
-  if (Number.isNaN(nacimiento.getTime())) return null;
-
-  const hoy = new Date();
-  let edad = hoy.getFullYear() - nacimiento.getUTCFullYear();
-
-  /**
-   * Se comparan mes y día como números, en vez de armar la fecha del cumpleaños
-   * de este año: `new Date(anio, mes, dia)` con un 29 de febrero en un año no
-   * bisiesto se desborda al 1 de marzo, y de paso volvería a mezclar husos.
-   */
-  const meses = hoy.getMonth() - nacimiento.getUTCMonth();
-  if (meses < 0 || (meses === 0 && hoy.getDate() < nacimiento.getUTCDate())) edad -= 1;
-
-  return edad;
-}
-
-/**
- * El año de nacimiento tal como lo escribió la persona, o null si la fecha no
- * sirve. Existe para que el piso de año no lo lea en local (ver la nota de
- * arriba): con `getFullYear()`, todo nacimiento del 1 de enero daba el año
- * anterior.
+/*
+ * edadCumplida y anioDeNacimiento viven en comun/cuenta.js desde el 2026-09-29,
+ * porque el frontend necesita exactamente las mismas cuentas. Todo lo de arriba
+ * sigue valiendo para las dos, y la nota sobre el 29 de febrero está allá.
  */
-export function anioDeNacimiento(fechaNacimiento) {
-  if (!fechaNacimiento) return null;
-  const nacimiento = new Date(fechaNacimiento);
-  return Number.isNaN(nacimiento.getTime()) ? null : nacimiento.getUTCFullYear();
-}
+export { edadCumplida, anioDeNacimiento } from '../../../comun/cuenta.js';
 
 /**
  * Sección 17 del Definitivo. `certificacionesPorPais` es un mapa

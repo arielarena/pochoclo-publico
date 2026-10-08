@@ -548,7 +548,7 @@ export const CORRECCIONES_POR_GENERO = {
      * Acción. Medido el 2026-09-02 contra un control de 18 títulos
      * canónicos (Duro de Matar, Arma Mortal, Máxima Velocidad...): con solo
      * el veto de superhéroes entraban 6/18 al lote 1; sacando además estos
-     * cuatro géneros de la rama, sube a los 18/18 esperados. Ver las notas de decisiones del proyecto
+     * cuatro géneros de la rama, sube a los 18/18 esperados. Ver
      * 4.15.5b para el detalle completo, con los números por variante.
      */
     sortBy: 'vote_count.desc',

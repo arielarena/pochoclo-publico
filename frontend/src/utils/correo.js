@@ -1,3 +1,5 @@
+import { FORMATO_CORREO, LARGO_MAXIMO_CORREO, MENSAJE_CORREO_INVALIDO } from '../../../comun/cuenta.js';
+
 /**
  * Validación de correo del lado del cliente, antes de molestar al servidor.
  *
@@ -17,7 +19,7 @@
  * Esto es comodidad, no seguridad: la validación que no se puede saltear es
  * la del servidor, en backend/src/auth/auth.js.
  */
-const FORMATO_CORREO = /^[^\s@.]+(\.[^\s@.]+)*@[^\s@.]+(\.[^\s@.]+)+$/;
+/* FORMATO_CORREO viene de comun/cuenta.js, el mismo que usa el servidor. */
 
 /**
  * Largo máximo del correo, el de la norma: 254 caracteres (RFC 5321).
@@ -29,14 +31,14 @@ const FORMATO_CORREO = /^[^\s@.]+(\.[^\s@.]+)*@[^\s@.]+(\.[^\s@.]+)+$/;
  * agregó después de comprobar que un correo de 100.000 caracteres creaba la
  * cuenta. Acá es para avisar antes de enviar, como todo este archivo.
  *
- * Está duplicado a mano igual que el formato, por el mismo motivo: son dos
- * paquetes separados sin código común. Si se cambia uno, cambiar el otro.
+ * El valor vive en comun/cuenta.js, igual que el formato, y lo importan las
+ * dos puntas.
  */
-export const LARGO_MAXIMO_CORREO = 254;
+export { LARGO_MAXIMO_CORREO };
 
 export function esCorreoValido(texto) {
   const correo = (texto ?? '').trim();
   return FORMATO_CORREO.test(correo) && correo.length <= LARGO_MAXIMO_CORREO;
 }
 
-export const MENSAJE_CORREO_INVALIDO = 'Escribí un correo con la forma nombre@sitio.com.';
+export { MENSAJE_CORREO_INVALIDO };

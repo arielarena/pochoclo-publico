@@ -2,6 +2,7 @@ import { betterAuth } from 'better-auth';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import 'dotenv/config';
 import { pool } from '../config/db.js';
+import { CODIGO_VALIDACION } from '../../../comun/cuenta.js';
 import {
   validarNombre,
   validarCorreo,
@@ -35,10 +36,10 @@ import {
  * alcanzaba de casualidad y se rompe con el primer error suyo que salga sin
  * código, así que ahora los nuestros se marcan a propósito.
  *
- * EL VALOR ESTÁ DUPLICADO A MANO en frontend/src/auth/clienteAuth.js, que es
- * el único que lo lee. Si se cambia acá, cambiarlo allá.
+ * EL VALOR VIVE EN comun/cuenta.js, de donde lo importan esta punta y
+ * frontend/src/auth/clienteAuth.js, que es la única que lo lee.
  */
-export const CODIGO_VALIDACION = 'VALIDACION_POCHOCLO';
+export { CODIGO_VALIDACION };
 
 /** Error de validación nuestro, ya marcado. Ver CODIGO_VALIDACION. */
 function errorDeValidacion(mensaje) {
@@ -218,6 +219,26 @@ export const auth = betterAuth({
    * usar la sesión del usuario.
    */
   trustedOrigins: ORIGENES_FRONTEND,
+
+  /**
+   * LA PANTALLA DE ERROR DE BETTER AUTH SE MANDA AL INICIO DEL SITIO.
+   *
+   * Sin esto, `/api/auth/error` dibuja una página suya, en inglés y con un
+   * botón "Ask AI" hacia better-auth.com, que **muestra lo que venga en la
+   * dirección**. El código acepta solo letras, números y guiones, pero
+   * `error_description` es texto libre (escapado, así que no hay inyección de
+   * HTML). Medido el 2026-09-28: "Tu cuenta fue bloqueada. Escribí a ... para
+   * recuperarla." salía tal cual en api.pochoclo.ar. Es el mismo engaño por el
+   * que el 404 del sitio no muestra la dirección pedida (4.21 de las notas de decisiones del proyecto).
+   *
+   * El inicio no lee ninguno de esos dos parámetros, así que la redirección
+   * los descarta sin mostrar nada. Ningún flujo nuestro termina ahí en uso
+   * normal: la recuperación de contraseña siempre manda su `redirectTo` y la
+   * verificación su `callbackURL`, y no hay inicio de sesión con terceros.
+   */
+  onAPIError: {
+    errorURL: ORIGENES_FRONTEND[0],
+  },
 
   /**
    * Límite de intentos. Better Auth lo trae, pero APAGADO fuera de

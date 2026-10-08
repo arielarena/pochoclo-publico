@@ -37,9 +37,7 @@ export default function AccionesListas({ item }) {
               type="button"
               aria-pressed={dentro}
               onClick={() => alAlternar(lista.clave)}
-              className={`boton-secundario ${
-                dentro ? 'border-manteca bg-manteca text-noche' : ''
-              }`}
+              className="boton-secundario"
             >
               <span aria-hidden="true" className="mr-1.5">
                 {dentro ? '✓' : '+'}

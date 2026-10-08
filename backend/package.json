@@ -21,7 +21,9 @@
     "respaldo-simulacro": "node src/scripts/respaldoSimulacro.js",
     "precalentar": "node src/scripts/precalentar.js",
     "mantenimiento": "node src/scripts/mantenimiento.js",
-    "vigilancia": "node src/scripts/vigilancia.js"
+    "vigilancia": "node src/scripts/vigilancia.js",
+    "reiniciar": "node src/scripts/reiniciarLocal.js",
+    "controles": "node src/scripts/controles.js"
   },
   "dependencies": {
     "better-auth": "^1.7.1",

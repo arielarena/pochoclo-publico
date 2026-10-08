@@ -1,0 +1,557 @@
+{
+  "fecha": "2026-09-30",
+  "controles": {
+    "Populares (formulario vacío)": {
+      "cantidad": 70,
+      "cabecera": [
+        "pelicula:687163",
+        "tv:2316",
+        "tv:1399",
+        "tv:79744",
+        "tv:247718",
+        "tv:5920",
+        "tv:94664",
+        "pelicula:1084244",
+        "tv:113962",
+        "tv:1622"
+      ],
+      "titulos": [
+        "Proyecto Fin del Mundo",
+        "The Office",
+        "Game of Thrones",
+        "The Rookie",
+        "Tierra de Mafia"
+      ],
+      "ms": 1915
+    },
+    "Comedia": {
+      "cantidad": 62,
+      "cabecera": [
+        "tv:60625",
+        "tv:2316",
+        "tv:31132",
+        "pelicula:680",
+        "tv:79744",
+        "tv:1668",
+        "pelicula:1084244",
+        "tv:2190",
+        "tv:97546",
+        "pelicula:1226863"
+      ],
+      "titulos": [
+        "Rick y Morty",
+        "The Office",
+        "Un show más",
+        "Tiempos Violentos",
+        "The Rookie"
+      ],
+      "ms": 653
+    },
+    "Acción": {
+      "cantidad": 200,
+      "cabecera": [
+        "tv:135157",
+        "pelicula:101",
+        "tv:1437",
+        "tv:240692",
+        "tv:4629",
+        "pelicula:361743",
+        "tv:253296",
+        "tv:296206",
+        "tv:65143",
+        "tv:77169"
+      ],
+      "titulos": [
+        "Alquimia de Almas",
+        "El Perfecto Asesino",
+        "Firefly",
+        "Jack & Joker: U Steal My Heart!",
+        "Stargate SG-1"
+      ],
+      "ms": 1733
+    },
+    "Ciencia Ficción + Serie": {
+      "cantidad": 200,
+      "cabecera": [
+        "tv:108261",
+        "tv:221851",
+        "tv:230923",
+        "tv:4087",
+        "tv:6357",
+        "tv:66433",
+        "tv:70523",
+        "tv:82856",
+        "tv:96160",
+        "tv:1437"
+      ],
+      "titulos": [
+        "Señor Reina",
+        "Cásate con mi Esposo",
+        "Corredora Encantadora",
+        "Los Expedientes Secretos X",
+        "La Dimensión Desconocida"
+      ],
+      "ms": 1676
+    },
+    "Terror + Serie": {
+      "cantidad": 121,
+      "cabecera": [
+        "tv:13916",
+        "tv:95479",
+        "tv:124364",
+        "tv:45790",
+        "tv:66732",
+        "tv:35935",
+        "tv:6357",
+        "tv:1622",
+        "tv:1920",
+        "tv:42009"
+      ],
+      "titulos": [
+        "Death Note",
+        "Jujutsu Kaisen",
+        "From",
+        "JoJo's Bizarre Adventure",
+        "Stranger Things"
+      ],
+      "ms": 784
+    },
+    "Historia + Serie": {
+      "cantidad": 134,
+      "cabecera": [
+        "tv:278573",
+        "tv:67915",
+        "tv:70785",
+        "tv:220542",
+        "tv:35610",
+        "tv:60574",
+        "tv:83100",
+        "tv:28136",
+        "tv:220102",
+        "tv:63333"
+      ],
+      "titulos": [
+        "La corona perfecta",
+        "Goblin: El Guardián",
+        "Anne with an E",
+        "Los diarios de la boticaria",
+        "Inuyasha"
+      ],
+      "ms": 845
+    },
+    "Complejidad relajar": {
+      "cantidad": 189,
+      "cabecera": [
+        "tv:60625",
+        "tv:85077",
+        "tv:2316",
+        "tv:60863",
+        "tv:65930",
+        "tv:95557",
+        "pelicula:13",
+        "pelicula:155",
+        "tv:100049",
+        "tv:120089"
+      ],
+      "titulos": [
+        "Rick y Morty",
+        "Los elegidos",
+        "The Office",
+        "Haikyu!!",
+        "My Hero Academia"
+      ],
+      "ms": 1628
+    },
+    "Complejidad pensar": {
+      "cantidad": 194,
+      "cabecera": [
+        "tv:276161",
+        "tv:1396",
+        "pelicula:238",
+        "pelicula:278",
+        "tv:87108",
+        "tv:1408",
+        "pelicula:157336",
+        "pelicula:372058",
+        "pelicula:496243",
+        "pelicula:680"
+      ],
+      "titulos": [
+        "Así aprenderás",
+        "Breaking Bad",
+        "El Padrino",
+        "Sueño de fuga",
+        "Chernobyl"
+      ],
+      "ms": 983
+    },
+    "Clásicos": {
+      "cantidad": 40,
+      "cabecera": [
+        "pelicula:238",
+        "pelicula:278",
+        "pelicula:240",
+        "pelicula:424",
+        "pelicula:13",
+        "pelicula:497",
+        "pelicula:680",
+        "pelicula:1891",
+        "pelicula:550",
+        "pelicula:637"
+      ],
+      "titulos": [
+        "El Padrino",
+        "Sueño de fuga",
+        "El Padrino II",
+        "La Lista de Schindler",
+        "Forrest Gump"
+      ],
+      "ms": 547
+    },
+    "Estado de ánimo: reirme": {
+      "cantidad": 188,
+      "cabecera": [
+        "tv:37854",
+        "tv:60625",
+        "tv:2316",
+        "tv:2004",
+        "tv:61222",
+        "tv:12637",
+        "tv:1668",
+        "tv:34524",
+        "tv:63926",
+        "pelicula:77338"
+      ],
+      "titulos": [
+        "One Piece",
+        "Rick y Morty",
+        "The Office",
+        "Malcolm el de en Medio",
+        "BoJack Horseman"
+      ],
+      "ms": 1140
+    },
+    "Estado de ánimo: suspenso": {
+      "cantidad": 198,
+      "cabecera": [
+        "pelicula:155",
+        "pelicula:496243",
+        "pelicula:680",
+        "tv:124364",
+        "tv:19885",
+        "pelicula:550",
+        "pelicula:807",
+        "tv:136283",
+        "tv:4087",
+        "tv:70523"
+      ],
+      "titulos": [
+        "Batman: El caballero de la noche",
+        "Parásitos",
+        "Tiempos Violentos",
+        "From",
+        "Sherlock"
+      ],
+      "ms": 958
+    },
+    "Estado de ánimo: llorar": {
+      "cantidad": 200,
+      "cabecera": [
+        "pelicula:424",
+        "tv:67915",
+        "tv:890",
+        "pelicula:13",
+        "pelicula:11216",
+        "pelicula:378064",
+        "pelicula:423",
+        "pelicula:510",
+        "pelicula:637",
+        "tv:66433"
+      ],
+      "titulos": [
+        "La Lista de Schindler",
+        "Goblin: El Guardián",
+        "Neon Genesis Evangelion",
+        "Forrest Gump",
+        "Cinema Paradiso"
+      ],
+      "ms": 2131
+    },
+    "Estado de ánimo: enamorarme": {
+      "cantidad": 197,
+      "cabecera": [
+        "tv:273240",
+        "tv:219246",
+        "tv:278573",
+        "tv:124834",
+        "tv:67915",
+        "tv:70785",
+        "pelicula:13",
+        "pelicula:372058",
+        "tv:61663",
+        "tv:62914"
+      ],
+      "titulos": [
+        "Off Campus",
+        "Si la vida te da mandarinas",
+        "La corona perfecta",
+        "Heartstopper",
+        "Goblin: El Guardián"
+      ],
+      "ms": 936
+    },
+    "Estado de ánimo: volarMiMente": {
+      "cantidad": 188,
+      "cabecera": [
+        "pelicula:27205",
+        "tv:42509",
+        "tv:6357",
+        "tv:70523",
+        "tv:95396",
+        "pelicula:603",
+        "tv:1920",
+        "tv:46648",
+        "pelicula:77",
+        "pelicula:38"
+      ],
+      "titulos": [
+        "El Origen",
+        "Steins Gate",
+        "La Dimensión Desconocida",
+        "Dark",
+        "Severance"
+      ],
+      "ms": 921
+    },
+    "Estado de ánimo: pasarElTiempo": {
+      "cantidad": 189,
+      "cabecera": [
+        "tv:60625",
+        "tv:85077",
+        "tv:2316",
+        "tv:42573",
+        "tv:60863",
+        "pelicula:13",
+        "pelicula:155",
+        "tv:100049",
+        "tv:120089",
+        "tv:2004"
+      ],
+      "titulos": [
+        "Rick y Morty",
+        "Los elegidos",
+        "The Office",
+        "Slam Dunk",
+        "Haikyu!!"
+      ],
+      "ms": 341
+    },
+    "Estado de ánimo: inspirador": {
+      "cantidad": 200,
+      "cabecera": [
+        "tv:299167",
+        "tv:87108",
+        "pelicula:424",
+        "pelicula:936075",
+        "pelicula:423",
+        "tv:65249",
+        "pelicula:255709",
+        "pelicula:77338",
+        "tv:129888",
+        "tv:291496"
+      ],
+      "titulos": [
+        "Rancho Dutton",
+        "Chernobyl",
+        "La Lista de Schindler",
+        "Michael",
+        "El Pianista"
+      ],
+      "ms": 1009
+    },
+    "Estado de ánimo: accion": {
+      "cantidad": 200,
+      "cabecera": [
+        "tv:135157",
+        "pelicula:101",
+        "tv:1437",
+        "tv:240692",
+        "tv:4629",
+        "pelicula:361743",
+        "tv:253296",
+        "tv:296206",
+        "tv:65143",
+        "tv:77169"
+      ],
+      "titulos": [
+        "Alquimia de Almas",
+        "El Perfecto Asesino",
+        "Firefly",
+        "Jack & Joker: U Steal My Heart!",
+        "Stargate SG-1"
+      ],
+      "ms": 284
+    },
+    "Estado de ánimo: velocidad": {
+      "cantidad": 137,
+      "cabecera": [
+        "pelicula:359724",
+        "pelicula:992",
+        "tv:20695",
+        "pelicula:911430",
+        "pelicula:11474",
+        "pelicula:96721",
+        "pelicula:980489",
+        "tv:40424",
+        "pelicula:158",
+        "pelicula:321487"
+      ],
+      "titulos": [
+        "Contra lo imposible",
+        "Sherlock Jr.",
+        "Yu-Gi-Oh! 5D's",
+        "F1 la película",
+        "Los guerreros"
+      ],
+      "ms": 872
+    },
+    "Estado de ánimo: reflexionar": {
+      "cantidad": 198,
+      "cabecera": [
+        "pelicula:424",
+        "tv:68595",
+        "pelicula:496243",
+        "tv:1044",
+        "tv:1430",
+        "tv:58474",
+        "tv:62914",
+        "pelicula:11216",
+        "pelicula:1232449",
+        "pelicula:378064"
+      ],
+      "titulos": [
+        "La Lista de Schindler",
+        "Planeta Tierra 2",
+        "Parásitos",
+        "Planeta Tierra",
+        "Cosmos: Un viaje personal"
+      ],
+      "ms": 886
+    },
+    "Estado de ánimo: asustarme": {
+      "cantidad": 195,
+      "cabecera": [
+        "tv:13916",
+        "tv:95479",
+        "tv:124364",
+        "tv:45790",
+        "tv:66732",
+        "pelicula:539",
+        "tv:6357",
+        "tv:1622",
+        "tv:1920",
+        "tv:42009"
+      ],
+      "titulos": [
+        "Death Note",
+        "Jujutsu Kaisen",
+        "From",
+        "JoJo's Bizarre Adventure",
+        "Stranger Things"
+      ],
+      "ms": 735
+    },
+    "Parecido a El Padrino": {
+      "cantidad": 26,
+      "cabecera": [
+        "tv:1398",
+        "tv:1438",
+        "pelicula:364150",
+        "pelicula:769",
+        "tv:194764",
+        "pelicula:524",
+        "pelicula:1607",
+        "tv:12598",
+        "tv:61068",
+        "tv:54650"
+      ],
+      "titulos": [
+        "Los Soprano",
+        "Los Vigilantes",
+        "The Godfather Trilogy: 1901-1980",
+        "Buenos Muchachos",
+        "El Pingüino"
+      ],
+      "ms": 1535
+    },
+    "Parecido a The Walking Dead": {
+      "cantidad": 26,
+      "cabecera": [
+        "tv:106379",
+        "tv:206586",
+        "tv:211684",
+        "tv:194583",
+        "tv:219543",
+        "pelicula:76341",
+        "tv:62286",
+        "pelicula:447332",
+        "pelicula:19908",
+        "tv:61345"
+      ],
+      "titulos": [
+        "Fallout",
+        "The Walking Dead: Sobrevivientes",
+        "The Walking Dead: Daryl Dixon",
+        "The Walking Dead: Dead City",
+        "Comando de Criaturas"
+      ],
+      "ms": 1082
+    },
+    "Gustos: Acción + CF + Thriller + clásicos": {
+      "cantidad": 200,
+      "cabecera": [
+        "tv:1429",
+        "tv:31911",
+        "pelicula:157336",
+        "pelicula:680",
+        "tv:124364",
+        "tv:135157",
+        "tv:19885",
+        "pelicula:1891",
+        "pelicula:27205",
+        "pelicula:550"
+      ],
+      "titulos": [
+        "Attack on Titan",
+        "Fullmetal Alchemist: Brotherhood",
+        "Interestelar",
+        "Tiempos Violentos",
+        "From"
+      ],
+      "ms": 1498
+    },
+    "Gustos: Comedia": {
+      "cantidad": 62,
+      "cabecera": [
+        "tv:60625",
+        "tv:2316",
+        "tv:31132",
+        "pelicula:680",
+        "tv:79744",
+        "tv:1668",
+        "pelicula:1084244",
+        "tv:2190",
+        "tv:97546",
+        "pelicula:1226863"
+      ],
+      "titulos": [
+        "Rick y Morty",
+        "The Office",
+        "Un show más",
+        "Tiempos Violentos",
+        "The Rookie"
+      ],
+      "ms": 580
+    }
+  }
+}

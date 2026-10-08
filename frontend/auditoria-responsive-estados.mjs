@@ -7,7 +7,7 @@
  * revés: aparecen con la grilla llena, el panel de filtros abierto, el modal
  * arriba, el desplegable desplegado y los chips cargados. Es el mismo motivo
  * por el que la auditoría de accesibilidad se le escapaban cuatro defectos
- * (ver las notas de decisiones del proyecto, sección 6).
+ * (ver sección 6).
  *
  * Comparte los criterios de medición con la otra: desborde horizontal
  * (midiendo rectángulos, porque `App.jsx` recorta con `overflow-x-clip` y el

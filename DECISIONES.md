@@ -1,6 +1,6 @@
 # Decisiones de ingeniería
 
-Diecinueve casos del desarrollo de Pochoclo, con lo que se midió y lo que se decidió. Están los que salieron bien y también los que se implementaron, se midieron y se tiraron.
+Veinte casos del desarrollo de Pochoclo, con lo que se midió y lo que se decidió. Están los que salieron bien y también los que se implementaron, se midieron y se tiraron.
 
 Es importante remarcar que casi ninguno se resolvió con la primera intuición, y que varios de los errores más caros eran código que funcionaba perfecto.
 
@@ -309,8 +309,6 @@ El simulacro se hace parando el túnel a propósito, que reproduce exactamente e
 
 `backend/src/scripts/vigilancia.js`
 
-`backend/src/scripts/vigilancia.js`
-
 ### 19. Un respaldo que nunca se restauró es una suposición
 
 El proveedor de la base guarda 6 horas de historial de recuperación. Alcanza para el error que se nota en el momento y no para el que se nota tarde. Algo que rompe un viernes a la noche y se descubre el lunes ya quedó fuera de la ventana.
@@ -324,3 +322,27 @@ Hay un simulacro que crea una cuenta con listas y preferencias, respalda, borra 
 La primera corrida encontró un fallo real, y es la razón de ser del simulacro. El cliente de PostgreSQL convierte un array de JavaScript en un array de Postgres, no en JSON. Para una columna de enteros es lo correcto, pero para la columna JSONB de los tramos de año arruinaba la restauración entera. El archivo se creaba bien y se verificaba bien, por lo que hubiera fallado recién el día que hiciera falta.
 
 `backend/src/scripts/respaldo.js`, `backend/src/scripts/respaldoSimulacro.js`
+
+---
+
+## La extensión
+
+### 20. Todas las pruebas daban "bien" y ningún botón respondía
+
+Probando la extensión a mano en Netflix, con mi cuenta, ninguna acción sobre el panel de la extensión respondía. Ni las listas, ni “Otro título”, ni el enlace a la ficha, ni la cruz para cerrarlo, y sin ningún aviso. Al mismo tiempo, todas las pruebas automáticas daban bien, incluida la de los botones, que corría en Netflix de verdad, con una sesión real de Pochoclo y contra la API publicada.
+
+Se encontró por descarte, con tres mediciones en la consola de la pestaña, usando DevTools. Cada una descartaba algo y decidía cuál era la siguiente.
+
+1. El enlace a la ficha tampoco abría nada. Es un enlace común que no habla con la extensión, así que el problema no estaba ni en la extensión ni en la API. Los clicks no llegaban al panel.
+2. El panel estaba arriba de todo. El elemento bajo el puntero era el panel, nada estaba marcado como inerte y no había ninguna ventana modal. Quedó descartada una capa transparente encima.
+3. Presionar y soltar el botón del mouse llegaban enteros, y el click entraba en la fase de captura de la ventana y nunca volvía en la burbuja. Netflix, con la sesión iniciada, corta el click en el camino hacia el panel, y de un modo que además anula la acción del enlace.
+
+Las pruebas no lo veían por dos motivos, y hacían falta los dos. Corrían en la portada de Netflix sin cuenta, donde no se carga la parte de Netflix que corta los clicks, y clickeaban con `click()`, que es un evento sintético y no hace el mismo recorrido que el de una persona.
+
+El arreglo es que el panel ataja sus propios clicks en la ventana, en fase de captura, que es el primer lugar por donde pasa un click, antes que cualquier contenedor de la página. Solo ataja los que caen sobre un control propio y solo los de verdad (`isTrusted`), y a esos les corta el paso hacia la página, que igual no tenía por qué enterarse de lo que se hace en el panel. Como el shadow root cerrado esconde qué botón se apretó, lo averigua por la posición del puntero, o por el control enfocado si se usó el teclado.
+
+La prueba nueva imita el efecto medido. Pone en la página un oyente que frena el click y anula su acción, y clickea con el mouse y el teclado simulados, que Chrome marca como eventos de una persona. Con el panel anterior al arreglo da mal en los cuatro controles, y eso es lo que confirma que prueba lo que dice. Una prueba que nunca se vio fallar no demuestra nada.
+
+Igual es una imitación y no Netflix, así que la vuelta a mano con sesión en la plataforma sigue siendo parte de probar la extensión. Es lo mismo que el caso 14, donde la herramienta automática decía que todo estaba bien porque medía otra cosa.
+
+`extension/panel.js`, `extension/probar-panel-listas.mjs`

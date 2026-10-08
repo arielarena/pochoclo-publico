@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useSesion } from '../auth/ContextoSesion.jsx';
 import { useTerminos } from '../auth/ContextoTerminos.jsx';
-import { FECHA_ACTUALIZACION } from '../config/sitio.js';
 import Cargando from '../components/Cargando.jsx';
 import useMetadatos from '../utils/useMetadatos.js';
 import RegionViva from '../components/RegionViva.jsx';
@@ -52,7 +51,15 @@ export default function PaginaAceptarTerminos() {
   useMetadatos('aceptarTerminos');
 
   const { usuario, cargando: cargandoSesion } = useSesion();
-  const { pendiente, consultado, aceptar } = useTerminos();
+  const { pendiente, consultado, aceptar, vigentesDesde } = useTerminos();
+  /**
+   * "AAAA-MM-DD" a "DD/MM/AAAA", el formato de las páginas legales, partiendo
+   * el texto y sin `new Date`, que leería la fecha sola como medianoche UTC
+   * y en Argentina la correría al día anterior (ver utils/edad.js). Si el
+   * servidor no la manda, la frase sale sin fecha antes que con una inventada.
+   */
+  const partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(vigentesDesde || '');
+  const fechaCambio = partes ? `${partes[3]}/${partes[2]}/${partes[1]}` : null;
   const navegar = useNavigate();
 
   const [acepto, setAcepto] = useState(false);
@@ -121,7 +128,7 @@ export default function PaginaAceptarTerminos() {
     <main id="contenido" className="pagina-lectura">
       <h1 className="titulo-pagina">Actualizamos los Términos</h1>
       <p className="bajada mt-3">
-        Cambiamos el texto de los Términos y Condiciones el {FECHA_ACTUALIZACION}. Como los habías aceptado
+        Cambiamos el texto de los Términos y Condiciones{fechaCambio ? ` el ${fechaCambio}` : ''}. Como los habías aceptado
         marcando una casilla, te los pedimos de nuevo en vez de darlos por aceptados sin avisarte.
       </p>
 

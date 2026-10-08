@@ -36,6 +36,7 @@ Solo las dos primeras son obligatorias para levantar el servidor.
 | `EXIGIR_CORREO_VERIFICADO`        | En producción va en `true`. Apagarla reabre la enumeración de cuentas, así que el arranque lo exige explícitamente con `PERMITIR_ENUMERACION_DE_CUENTAS`                                      |
 | `HSTS_*`                          | Cabecera HSTS, apagada por omisión                                                                                                                                                            |
 | `VERIFICAR_CONTRASENAS_FILTRADAS` | Consulta a Have I Been Pwned con k-anonimato al elegir contraseña. Falla abierta                                                                                                              |
+| `NEON_ENDPOINT_*`                 | Opcionales, solo para `npm run reiniciar`. El endpoint de cada rama de Neon, para que diga contra cuál quedó el servidor                                                                      |
 
 ## Scripts
 
@@ -55,6 +56,10 @@ Solo las dos primeras son obligatorias para levantar el servidor.
 | `npm run vigilancia`          | Trece chequeos de salud, con aviso por correo                     |
 | `npm run cuentas-de-prueba`   | Borra las cuentas que crean las auditorías                        |
 | `npm run terminos-pendientes` | Lista quién tiene la aceptación de términos atrasada              |
+| `npm run controles`           | Batería de control del motor, comparada contra la última aceptada |
+| `npm run reiniciar`           | Reinicia el servidor local en Windows y espera a que conteste     |
+
+`npm run controles` corre contra TMDb en vivo, así que no da aprobado o reprobado. Da la diferencia contra `controles-referencia.json` y marca lo que se movió más de lo esperable. Si el cambio es el buscado, `npm run controles -- --guardar` lo deja como nueva referencia.
 
 ## Estructura
 

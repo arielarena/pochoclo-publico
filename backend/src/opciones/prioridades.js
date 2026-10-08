@@ -3,6 +3,7 @@ import { buscarParecidoA } from './parecidoA.js';
 import { leerAgregados } from '../repositories/agregados.js';
 import { aplicarFiltros, ordenar as ordenarResultados } from '../logic/resultados.js';
 import { claveDe } from '../utils/clave.js';
+import { MAXIMO_PRIORIDADES } from '../../../comun/busqueda.js';
 
 /**
  * Priorizar preferencias (sección 6 del Definitivo).
@@ -80,8 +81,10 @@ export const CATEGORIAS_PRIORIZABLES = {
  * se activa: la prioridad recortada **no se pierde, se degrada a Preferencia
  * común**, o sea que sigue filtrando en todas las divisiones en vez de tener
  * una propia.
+ *
+ * El valor (4) vive en comun/busqueda.js, que el formulario también importa.
  */
-export const MAXIMO_PRIORIDADES = 4;
+export { MAXIMO_PRIORIDADES };
 
 /**
  * Cuándo se considera que las prioridades están en conflicto.

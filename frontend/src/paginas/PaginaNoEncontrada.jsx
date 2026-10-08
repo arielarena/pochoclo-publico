@@ -17,8 +17,6 @@
  * sitio). Quien escribe la dirección a mano o entra desde afuera le pega
  * primero al hosting, y ahí el 404 lo contesta el hosting salvo que esté
  * configurado el "SPA fallback" (servir index.html para cualquier ruta).
- * Sin eso, además, cualquier enlace profundo compartido deja de andar, no
- * solo el 404.
  */
 import { Link } from 'react-router-dom';
 import PaginaError from './PaginaError.jsx';

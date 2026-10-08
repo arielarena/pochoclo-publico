@@ -11,7 +11,7 @@
 #      por WhatsApp, el que la recibe la abre, y el hosting no encuentra el
 #      archivo. La aplicación nunca llega a cargarse.
 #   2. Nuestra propia pantalla de 404 (paginas/PaginaNoEncontrada.jsx), que solo
-#      se ve si la aplicación está cargada.
+#      se ve si la aplicación está cargada. Ver la sección 4.21 de las notas de decisiones del proyecto.
 #
 # `vite preview` ya hace esto solo, así que en desarrollo el problema no se ve.
 # ------------------------------------------------------------------ www

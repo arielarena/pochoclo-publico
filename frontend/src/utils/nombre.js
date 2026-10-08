@@ -1,3 +1,5 @@
+import { LARGO_MAXIMO_NOMBRE } from '../../../comun/cuenta.js';
+
 /**
  * Validación del nombre del lado del cliente, antes de molestar al servidor.
  *
@@ -12,11 +14,9 @@
  * borre todo desde las devtools. Esta es para que el mensaje aparezca antes de
  * enviar.
  *
- * El número está duplicado a mano allá, por el mismo motivo que el formato del
- * correo: son dos paquetes separados sin código común. Si se cambia uno,
- * cambiar el otro.
+ * El número vive en comun/cuenta.js, de donde lo leen el servidor y esta punta.
  */
-export const LARGO_MAXIMO_NOMBRE = 60;
+export { LARGO_MAXIMO_NOMBRE };
 
 /** Devuelve el problema del nombre, o null si está bien. */
 export function problemaDeNombre(texto) {

@@ -119,7 +119,7 @@ async function specsPorTipo(generos, extra = {}) {
  * la única rama que el botón tiene. Es el caso de "accion" (ver su comentario
  * en data/estadosAnimo.js): sin esto, ponerle `vetoKeywords` a un botón en
  * modo 'genero' sería el mismo no-op silencioso que ya describe la sección
- * 4.2 del las notas de decisiones del proyecto para 'CLASICOS'.
+ * 4.2 de las notas de decisiones del proyecto para 'CLASICOS'.
  *
  * **`config.sortBy` se aplica acá, a la rama de género pelado, sin importar
  * el modo** (2026-09-02). Antes solo lo leía la creación de specs de modo

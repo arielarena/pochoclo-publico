@@ -1,8 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { buscarTitulo } from '../api/cliente.js';
 import { urlPoster } from '../utils/imagenes.js';
 import { etiquetaDeLista, useListas } from './ContextoListas.jsx';
 import RegionViva from '../components/RegionViva.jsx';
+/**
+ * LARGO_MAXIMO_CONSULTA es el mismo número con el que el backend rechaza con
+ * 400 (backend/src/utils/consulta.js). Acá el campo no deja escribir más, así
+ * que ese error no se ve nunca.
+ */
+import { LARGO_MAXIMO_CONSULTA } from '../../../comun/busqueda.js';
 
 const MILISEGUNDOS_DEBOUNCE = 350;
 
@@ -26,7 +33,29 @@ const MILISEGUNDOS_DEBOUNCE = 350;
 export default function BuscadorParaAgregar({ lista }) {
   const { estaEn, alternar, agregar } = useListas();
 
-  const [consulta, setConsulta] = useState('');
+  /**
+   * La consulta se guarda también en el estado de la entrada del historial,
+   * para que entrar a la Ficha de un resultado y volver con "atrás" (o
+   * recargar) no la borre: React desmonta esta pantalla al navegar, así que
+   * el estado solo no sobrevive (ver 4.5 de las notas de decisiones del proyecto, mismo problema en
+   * /resultados).
+   *
+   * **VA EN EL ESTADO DEL HISTORIAL Y NO EN LA DIRECCIÓN, A PROPÓSITO.** Con
+   * un `?q=`, cualquiera podía mandar un enlace que abriera esta pantalla con
+   * el texto que quisiera escrito en el campo. El estado del historial solo
+   * lo escribe esta misma app: un enlace de afuera no lo puede traer.
+   *
+   * El input lee el estado local y no el del historial: un campo controlado
+   * cuyo valor llega recién en el render de una navegación puede saltar el
+   * cursor al final. El historial se actualiza después, con `replace`, así
+   * que tipear no llena el historial de entradas.
+   */
+  const ubicacion = useLocation();
+  const navegar = useNavigate();
+  const [consulta, setConsulta] = useState(() => {
+    const guardada = ubicacion.state?.consultaBuscador;
+    return typeof guardada === 'string' ? guardada.slice(0, LARGO_MAXIMO_CONSULTA) : '';
+  });
   const [resultados, setResultados] = useState([]);
   const [buscando, setBuscando] = useState(false);
   const [error, setError] = useState('');
@@ -56,6 +85,15 @@ export default function BuscadorParaAgregar({ lista }) {
     }, MILISEGUNDOS_DEBOUNCE);
     return () => clearTimeout(temporizador.current);
   }, [consulta]);
+
+  useEffect(() => {
+    if ((ubicacion.state?.consultaBuscador ?? '') === consulta) return;
+    // Misma dirección y el resto del estado intacto: solo cambia la consulta.
+    navegar(
+      { pathname: ubicacion.pathname, search: ubicacion.search, hash: ubicacion.hash },
+      { replace: true, state: { ...ubicacion.state, consultaBuscador: consulta } }
+    );
+  }, [consulta, ubicacion, navegar]);
 
   // La sugerencia es de una búsqueda puntual: al cambiar el texto se va.
   useEffect(() => {
@@ -90,6 +128,7 @@ export default function BuscadorParaAgregar({ lista }) {
       <input
         id="buscador-agregar"
         type="search"
+        maxLength={LARGO_MAXIMO_CONSULTA}
         value={consulta}
         onChange={(e) => setConsulta(e.target.value)}
         placeholder="Buscá una película o serie por nombre"
@@ -118,16 +157,29 @@ export default function BuscadorParaAgregar({ lista }) {
 
               return (
                 <li key={claveFila} className="flex items-center gap-3 p-2.5">
-                  <div className="h-14 w-10 shrink-0 overflow-hidden rounded bg-crema/5">
-                    {poster && <img src={poster} alt="" className="h-full w-full object-cover" />}
-                  </div>
-
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-crema">{r.titulo}</p>
-                    <p className="text-xs text-crema/50">{r.anio ?? 'Sin año'}</p>
+                    {/*
+                      El enlace a la Ficha cubre el póster, el título y el año,
+                      y NO el aviso de "¿La viste?": ese aviso lleva un botón,
+                      y un botón dentro de un enlace no es HTML válido. Mismo
+                      criterio que TarjetaResultado.
+                    */}
+                    <Link
+                      to={`/titulo/${r.tipo}/${r.tmdb_id}`}
+                      className="group flex min-w-0 items-center gap-3 rounded"
+                    >
+                      <div className="h-14 w-10 shrink-0 overflow-hidden rounded bg-crema/5">
+                        {poster && <img src={poster} alt="" className="h-full w-full object-cover" />}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-crema group-hover:underline">{r.titulo}</p>
+                        <p className="text-xs text-crema/50">{r.anio ?? 'Sin año'}</p>
+                      </div>
+                    </Link>
 
+                    {/* pl-13 es el ancho del póster más el gap: alinea el aviso con el título. */}
                     {sugerencia === claveFila && !estaEn('visto', r) && (
-                      <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-crema/60">
+                      <p className="mt-1 flex flex-wrap items-center gap-2 pl-13 text-xs text-crema/60">
                         <span>¿La viste?</span>
                         <button
                           type="button"

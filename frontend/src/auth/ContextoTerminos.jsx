@@ -30,6 +30,15 @@ export function ProveedorTerminos({ children }) {
 
   const [pendiente, setPendiente] = useState(false);
   const [consultado, setConsultado] = useState(false);
+  /**
+   * La fecha de la versión vigente, tal como la manda el servidor
+   * (`FECHA_TERMINOS_TEXTO`, "AAAA-MM-DD"). La muestra la pantalla de
+   * re-aceptación, que hasta el 2026-10-07 mostraba `FECHA_ACTUALIZACION`, la
+   * "Última actualización" de las páginas legales. Son fechas distintas: esa
+   * se movió al sumar la extensión sin mover los Términos, y la pantalla habría
+   * dicho que cambiaron ese día al lado de una lista de cambios de agosto.
+   */
+  const [vigentesDesde, setVigentesDesde] = useState(null);
 
   useEffect(() => {
     /**
@@ -46,7 +55,9 @@ export function ProveedorTerminos({ children }) {
     let vigente = true;
     estadoTerminos()
       .then((datos) => {
-        if (vigente) setPendiente(datos.pendiente === true);
+        if (!vigente) return;
+        setPendiente(datos.pendiente === true);
+        setVigentesDesde(typeof datos.vigentesDesde === 'string' ? datos.vigentesDesde : null);
       })
       .catch((err) => {
         /**
@@ -74,7 +85,7 @@ export function ProveedorTerminos({ children }) {
     setPendiente(false);
   }, []);
 
-  const valor = { pendiente, consultado, aceptar };
+  const valor = { pendiente, consultado, aceptar, vigentesDesde };
 
   return <ContextoTerminos.Provider value={valor}>{children}</ContextoTerminos.Provider>;
 }

@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer-core';
 import axeCore from 'axe-core';
+import { crearCuentaYEntrar } from './cuenta-de-prueba.mjs';
 
 const axeSource = axeCore.source;
 
@@ -137,41 +138,9 @@ await page.evaluate(() => {
 await new Promise((r) => setTimeout(r, 800));
 await auditar(page, 'Resultados con el panel de Filtros abierto');
 
-// El perfil, que necesita sesión: se registra una cuenta descartable.
+// El perfil, que necesita sesión: se registra una cuenta descartable y se entra con ella.
 await page.goto('about:blank');
-await page.goto(BASE + '/crear-cuenta', { waitUntil: 'networkidle2' });
-await page.type('#nombre', CUENTA_DE_PRUEBA.nombre);
-await page.type('#correo', CUENTA_DE_PRUEBA.correo);
-await page.type('#contrasena', CUENTA_DE_PRUEBA.contrasena);
-await page.evaluate((fecha) => {
-  const campo = document.querySelector('#fecha-nacimiento');
-  const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-  setter.call(campo, fecha);
-  campo.dispatchEvent(new Event('input', { bubbles: true }));
-}, CUENTA_DE_PRUEBA.fechaNacimiento);
-/**
- * La aceptación de los Términos es una casilla obligatoria, y el servidor la
- * exige además del cliente (ver backend/src/auth/validaciones.js).
- */
-await page.click('#acepto-terminos');
-await page.click('button[type="submit"]');
-await new Promise((r) => setTimeout(r, 2500));
-
-/**
- * Sin esta comprobación, un alta fallida NO rompe la auditoría: RutaPrivada
- * manda a /iniciar-sesion y las siete pantallas que necesitan sesión se
- * auditan igual, pero auditando el login siete veces y dando 0 problemas.
- * Pasó exactamente eso al agregarse la casilla de Términos, y el único
- * síntoma fue un selector que no aparecía, quince pantallas después.
- */
-if (page.url().includes('/crear-cuenta')) {
-  const motivo = await page.evaluate(
-    () => document.querySelector('[role="alert"]')?.textContent?.trim() ?? 'sin mensaje en pantalla'
-  );
-  throw new Error(
-    `No se pudo crear la cuenta de prueba, así que las pantallas con sesión no se pueden auditar. El formulario dice: ${motivo}`
-  );
-}
+await crearCuentaYEntrar(page, BASE, CUENTA_DE_PRUEBA);
 
 await page.goto(BASE + '/perfil', { waitUntil: 'networkidle2' });
 await new Promise((r) => setTimeout(r, 1200));
@@ -222,7 +191,8 @@ await auditar(page, 'Perfil con el borrado de cuenta abierto');
  * buscador cargado, y el aviso cruzado de Ver más tarde con Visto.
  */
 await page.goto(BASE + '/titulo/pelicula/238', { waitUntil: 'networkidle2', timeout: 120000 });
-await page.waitForFunction(() => document.body.innerText.includes('padrino'), { timeout: 120000 });
+// Sin distinguir mayúsculas: desde la cadena de idioma (4.27) el título es "El Padrino" y no "El padrino".
+await page.waitForFunction(() => document.body.innerText.toLowerCase().includes('padrino'), { timeout: 120000 });
 await new Promise((r) => setTimeout(r, 800));
 await page.evaluate(() => {
   for (const etiqueta of ['Favoritas', 'Visto', 'Ver más tarde']) {

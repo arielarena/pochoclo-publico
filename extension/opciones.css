@@ -1,0 +1,215 @@
+/*
+ * Sin sistema de diseño a propósito, igual que la pantalla de medición que
+ * había antes. Esta página vive en el origen de la extensión y no comparte el
+ * build del frontend, así que traer los tokens sería copiarlos a mano y dejar
+ * una tercera copia que se desactualiza sola. Lo único que se respeta son los
+ * colores de la marca, que salen de la sección 22 del Definitivo.
+ *
+ * El panel de verdad, que es la pieza de producto, sí está medido, con el
+ * contraste, los blancos de 24x24 y el ancho a 320 px (ver 8.2 del análisis).
+ */
+body {
+  margin: 0;
+  padding: 24px 16px;
+  background: #150e1b;
+  color: #faf0de;
+  font: 15px/1.55 system-ui, sans-serif;
+}
+
+main {
+  max-width: 34em;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  color: #f2a317;
+  letter-spacing: 0.02em;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #faf0de26;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+.ayuda {
+  color: #faf0debf; /* crema al 75%: 8,4:1 sobre noche */
+  font-size: 13px;
+}
+
+a {
+  color: #f2a317;
+}
+
+/* El contorno del foco tiene que verse también sobre una casilla marcada, que
+   con `accent-color` se pinta de manteca. Con offset queda por fuera del
+   control, sobre el fondo noche. */
+:focus-visible {
+  outline: 2px solid #f2a317;
+  outline-offset: 2px;
+}
+
+.plataformas {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.plataformas li {
+  margin: 0;
+}
+
+/*
+ * La etiqueta entera es el blanco del click, así que el área queda muy por
+ * encima de los 24x24 del criterio 2.5.8 aunque la casilla nativa mida menos.
+ */
+.plataformas label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.plataformas input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #f2a317;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .plataformas label:hover {
+    background: #faf0de0d;
+  }
+}
+
+/*
+ * La fila de quien llegó desde el panel. Es una ayuda para encontrarla, no un
+ * estado de la casilla, así que no toca el color del texto ni compite con el
+ * foco, que es el que de verdad dice dónde estás parado.
+ */
+.plataformas li.destacada label {
+  background: #f2a3171f;
+  box-shadow: inset 3px 0 0 #f2a317;
+}
+
+/*
+ * EL AVISO DE LAS CASILLAS. Vacío no ocupa lugar (sin margen ni relleno) pero
+ * sigue en el árbol de accesibilidad, que es lo que necesita una región viva.
+ * Recién cuando lleva texto se vuelve una caja, y el tipo decide el color del
+ * borde. El texto va siempre en crema pleno: sobre el fondo teñido más oscuro,
+ * el de éxito, mide más de 13:1.
+ */
+.aviso {
+  margin: 0;
+}
+
+.aviso[data-tipo] {
+  margin: 4px 0 14px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-left: 3px solid #faf0de59;
+  background: #faf0de0d;
+}
+
+.aviso[data-tipo='exito'] {
+  border-left-color: #f2a317;
+  background: #f2a3171a;
+}
+
+.aviso[data-tipo='error'] {
+  border-left-color: #f26374; /* terciopelo claro, el que usa el sitio para texto de error */
+  background: #e639501a;
+}
+
+.aviso strong {
+  font-weight: 600;
+}
+
+/* La tilde se dibuja con dos bordes y es decorativa: el pseudoelemento no
+   tiene contenido, así que el lector no la anuncia. */
+.aviso[data-tipo='exito'] strong::before {
+  content: '';
+  display: inline-block;
+  width: 0.35em;
+  height: 0.7em;
+  margin: 0 0.6em 0.15em 0.15em;
+  border: solid #f2a317;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aviso[data-tipo] {
+    animation: aparecer-aviso 180ms ease-out;
+  }
+}
+
+@keyframes aparecer-aviso {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/*
+ * EL BOTÓN DE LA SECCIÓN "EN CHROME", con la forma del secundario del sitio,
+ * borde crema al 40% (3,5:1 sobre noche, arriba de los 3:1 del criterio 1.4.11)
+ * y sin relleno. Es el único botón de la pantalla, así que no compite con nada.
+ *
+ * El aviso de "se abre en una pestaña nueva" va adentro del botón y no al lado,
+ * para que forme parte de su nombre accesible y se anuncie junto con él. Desde
+ * el 2026-10-06 no se ve (`.solo-lector`), por pedido de Ariel: en pantalla es
+ * texto de más para un botón simple, y a quien no ve la pestaña le hace falta.
+ * El alto mínimo de 44 px cubre de sobra los 24 del criterio 2.5.8.
+ */
+.boton {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #faf0de66;
+  border-radius: 10px;
+  background: transparent;
+  color: #faf0de;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/*
+ * Texto que lee el lector de pantalla y no se ve, como el aviso de que un botón
+ * abre otra pestaña. Un pixel recortado, y no display none ni visibility
+ * hidden, que lo sacarían también del lector.
+ */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (hover: hover) {
+  .boton:hover {
+    border-color: #f2a317b3;
+  }
+}

@@ -38,9 +38,8 @@ const ESTADOS = [
 /**
  * Los IDs de género que existen en una sola de las dos taxonomías de TMDb.
  * Duplicados a mano desde backend/src/data/genres.js, que es la fuente: si
- * cambian allá, cambiarlos acá. Es el mismo trato que tiene
- * utils/filtrosCliente.js con logic/resultados.js (no hay tipos compartidos
- * entre frontend y backend).
+ * cambian allá, cambiarlos acá. No van a comun/ porque genres.js es grande y
+ * casi todo lo que tiene es del motor.
  */
 const SOLO_PELICULA = new Set([28, 12, 14, 36, 27, 10402, 10749, 878, 10770, 53, 10752]);
 const SOLO_SERIE = new Set([10759, 10762, 10763, 10764, 10765, 10766, 10767, 10768]);
@@ -55,15 +54,10 @@ const EMPTY_SET = new Set();
 /**
  * Filtros (sección 7 del Definitivo), exclusivos de /resultados. Se
  * aplican en el cliente sobre los candidatos ya traídos (ver
- * utils/filtrosCliente.js), así que cada cambio acá refleja al toque, sin
- * volver a pedirle nada al backend.
- *
- * Actor/Director SÍ están acá desde v2. Antes no podían estar: verificar si
- * un candidato tenía a una persona exigía pedirle sus créditos a TMDb, o sea
- * una llamada por título en cada búsqueda. Desde que `credits` viaja en el
- * mismo `append_to_response` que el resto del detalle, cada candidato ya
- * llega con los IDs de su reparto y su dirección, y filtrar pasó a ser una
- * comparación en memoria que no cuesta ni una llamada.
+ * comun/resultados.js), así que cada cambio acá refleja al toque, sin
+ * volver a pedirle nada al backend. Actor/Director no está acá: el motor
+ * de búsqueda no tiene esa lógica implementada como filtro todavía (ver
+ * backend/README.md, milestone 10).
  */
 export default function PanelFiltros({
   filtros,

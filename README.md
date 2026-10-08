@@ -26,6 +26,8 @@ Y “Me siento con suerte” en cualquier formulario, que devuelve un solo títu
 
 Además, se suman campos que no se encuentran en otros catálogos. “Parecido a” otro título, “complejidad” (algo para relajar o algo para pensar) y la duración total de una serie, que es lo que permite pedir una que se pueda terminar en un fin de semana. Además, teniendo una cuenta se suman las listas “Favoritas”, “Visto” y “Ver más tarde”, y plataformas y gustos registrados, que cambian lo que se recomienda. Lo marcado como visto deja de aparecer.
 
+También hay una [extensión para Chrome](https://chromewebstore.google.com/detail/llmocniicbbceghmhomohkcgnfndlodf). Estando en Netflix, Prime Video, Disney+, HBO Max o Apple TV, recomienda un título disponible en esa misma plataforma, y con la sesión iniciada en el sitio tiene en cuenta los gustos registrados y deja guardarlo en las listas.
+
 Algunas ideas abiertas son la posibilidad de interpretar lenguaje natural y distinguir lo masivo de lo de nicho. Ninguna se encuentra implementada actualmente.
 
 ## Stack
@@ -36,6 +38,7 @@ Algunas ideas abiertas son la posibilidad de interpretar lenguaje natural y dist
 | Autenticación   | Better Auth autoalojado                                                |
 | Datos           | API de TMDb (fuente primaria), TVMaze (duración de series)             |
 | Infraestructura | Cloudflare Pages y Functions, túnel de Cloudflare, systemd sobre Linux |
+| Extensión       | Chrome, Manifest V3, JavaScript sin dependencias                       |
 
 ## Cómo funciona
 
@@ -59,10 +62,10 @@ El frontend y el backend se despliegan por separado y no dependen uno del otro p
 
 ## Decisiones de ingeniería relevantes
 
-Todo lo que sigue está medido, con el antes y el después anotado. Hay 19 casos desarrollados con sus números en `DECISIONES.md`, incluidos los que se midieron y se decidió no hacer.
+Todo lo que sigue está medido, con el antes y el después anotado. Hay 20 casos desarrollados con sus números en `DECISIONES.md`, incluidos los que se midieron y se decidió no hacer.
 
 - **Rendimiento del motor de búsqueda:** El peor caso que se encontró al inicio del desarrollo (cinco países \* cuatro décadas) pasó de 86 a 3 segundos. TMDb no entiende “Argentina o México”, así que había que hacer una llamada por combinación. Se resolvió con un pool de concurrencia propio, un tope de candidatos repartido por turnos entre consultas (para que un país no se coma el cupo de los otros) y dos niveles de caché. El límite de concurrencia salió de medir dónde empieza a degradarse la API: a 80 pedidos en paralelo responde en 823 ms, a 100 sube a 2301 ms. Ver `src/buscador/motorBusqueda.js` y `src/utils/concurrencia.js`.
-  El problema verdadero fue surgiendo más adelante, ya que nada acotaba el producto cartesiano, así que se podían pedir tantos países y tantos años como uno quisiera. Probé armar una búsqueda muchísimo más compleja pero dentro de todo realista. Necesitaba 1335 consultas y tardaba 34 segundos. De esas 1335 consultas solo 183 aportaron algún título al resultado, porque el reparto por turnos llenaba el cupo de candidatos en la primera vuelta. Pedir más consultas que el tope no puede traer más resultados, solo más espera. Buscando si el mismo defecto estaba en otro lado apareció que si tenía gustos guardados con cinco géneros y todas las décadas, producían 8670 consultas y tardaba 134 segundos, se llegaba eligiendo de las listas de la propia pantalla, y quedaba guardado, así que esa persona lo volvía a pagar en cada búsqueda personalizada. Los tres quedaron acotados en un solo lugar, el punto por donde pasan los tres generadores de consultas, que deduce los grupos de la propia consulta en vez de pedírselos a quien llama. Por consecuencia, una función nueva hereda la protección sin que nadie tenga que acordarse. Ver punto 20 de `DECISIONES.md`.
+  El problema verdadero fue surgiendo más adelante, ya que nada acotaba el producto cartesiano, así que se podían pedir tantos países y tantos años como uno quisiera. Probé armar una búsqueda muchísimo más compleja pero dentro de todo realista. Necesitaba 1335 consultas y tardaba 34 segundos. De esas 1335 consultas solo 183 aportaron algún título al resultado, porque el reparto por turnos llenaba el cupo de candidatos en la primera vuelta. Pedir más consultas que el tope no puede traer más resultados, solo más espera. Buscando si el mismo defecto estaba en otro lado apareció que si tenía gustos guardados con cinco géneros y todas las décadas, producían 8670 consultas y tardaba 134 segundos, se llegaba eligiendo de las listas de la propia pantalla, y quedaba guardado, así que esa persona lo volvía a pagar en cada búsqueda personalizada. Los tres quedaron acotados en un solo lugar, el punto por donde pasan los tres generadores de consultas, que deduce los grupos de la propia consulta en vez de pedírselos a quien llama. Por consecuencia, una función nueva hereda la protección sin que nadie tenga que acordarse. Ver punto 3 de `DECISIONES.md`.
 - **Escrituras en lote.** Guardar 200 títulos eran 600 consultas separadas, aproximadamente 4 segundos de latencia de red. Hoy es un solo `INSERT` que recibe el lote como JSON y lo expande con `jsonb_to_recordset`, tardando solamente 200ms. Ver `src/repositories/titulos.js`.
 - **Calibración de las recomendaciones.** Esta es una cuestión que no pensé que iba a traer muchos problemas, pero resultó ser una de las que más trabajo llevó. TMDb utiliza “keywords” o palabras clave para cada título. Un título puede tener múltiples keywords, o ninguna. El problema es que estas keywords no describen al título, sino que etiquetan por lo que aparece en pantalla, así que la palabra clave “christmas” (navidad) trae Harry Potter. A su vez, los géneros son bastante vagos. El género “Acción” trae épica de fantasía por ejemplo, por lo que se aplica una calibración para ciertos géneros. Hay un procedimiento repetible para detectar estas cuestiones (`src/scripts/calibrarGenero.js`, `calibrarTono.js`) y las correcciones viven en una tabla compartida, `CORRECCIONES_POR_GENERO` en `src/data/genres.js`.
 - **Accesibilidad WCAG 2.2 AA.** Hay tres capas: axe-core sobre 31 pantallas, revisión manual con lector de pantalla, y scripts propios que le piden a Chrome el árbol de accesibilidad por DevTools Protocol y lo transcriben a lo que se escucharía. Las herramientas automáticas daban cero y la revisión manual encontró nueve defectos, ninguno de ellos una etiqueta faltante. Ver `frontend/lector-simulado.mjs` y los tres `recorrido-lector*.mjs`.
@@ -94,7 +97,7 @@ npm run dev                 # http://localhost:5173
 
 `npm run seed-tvmaze` es opcional y tarda unos diez minutos. Lo que hace es espejar el catálogo de TVMaze para obtener información detallada de las series y poder responder “una serie que termine en un fin de semana”.
 
-Los pasos completos, con los avisos de consola esperables y qué hacer si algo falla, están en `backend/README.md` y `frontend/README.md`.
+Los pasos completos, con los avisos de consola esperables y qué hacer si algo falla, están en `backend/README.md` y `frontend/README.md`. Cómo cargar la extensión y correr sus pruebas está en `extension/README.md`.
 
 ## Scripts del backend
 
@@ -112,6 +115,8 @@ Los pasos completos, con los avisos de consola esperables y qué hacer si algo f
 | `npm run precalentar`        | Calienta el caché de los puntos de entrada fijos    |
 | `npm run mantenimiento`      | Orquesta respaldo, precalentado, latido y recálculo |
 | `npm run vigilancia`         | 13 chequeos de salud con aviso por correo           |
+| `npm run controles`          | Batería de control del motor contra una referencia  |
+| `npm run reiniciar`          | Reinicia el backend local en Windows                |
 
 ## Mapa del repositorio
 
@@ -129,8 +134,13 @@ backend/src/
 frontend/src/
   paginas/       una por ruta
   components/    reutilizables, incluidos los efectos visuales
-  utils/         espejo en cliente de los filtros del backend, caché corta
+  utils/         validaciones del formulario, caché corta, metadatos
 frontend/functions/   Cloudflare Functions (metadatos para rastreadores)
+
+comun/           reglas que tienen que ser idénticas en el backend y el
+                 frontend (validación de cuenta, topes de búsqueda, filtros)
+
+extension/       la extensión de Chrome y sus pruebas
 ```
 
 ### Sobre los comentarios del código
@@ -139,7 +149,7 @@ Los comentarios citan “el Definitivo” y secciones numeradas del tipo “ver 
 
 ## Estado
 
-Las versiones 1, 2 y 3 están terminadas y el sitio está publicado desde el 29 de agosto de 2026. La v4 (una extensión de Chrome) está relevada y sin empezar.
+Las versiones 1, 2 y 3 están terminadas y el sitio está publicado desde el 29 de agosto de 2026. La versión 4 también está finalizada, la extensión de Chrome, publicada en la Chrome Web Store desde el 8 de octubre de 2026.
 
 ## Cómo se construyó
 

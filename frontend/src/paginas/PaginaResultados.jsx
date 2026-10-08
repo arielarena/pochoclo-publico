@@ -11,7 +11,7 @@ import {
   obtenerIdiomas,
   obtenerProveedores,
 } from '../api/cliente.js';
-import { aplicarFiltrosCliente, ordenarCliente } from '../utils/filtrosCliente.js';
+import { aplicarFiltros, ordenar } from '../../../comun/resultados.js';
 import GrillaResultados from '../components/GrillaResultados.jsx';
 import EsqueletoGrilla from '../components/EsqueletoGrilla.jsx';
 import EstadoVacio from '../components/EstadoVacio.jsx';
@@ -149,7 +149,8 @@ function anuncioDeResultados({ mostrados, total, orden }) {
  * `navigate('/resultados', { state })`. Los Filtros y el Ordenar
  * (secciones 7 y 8) viven exclusivamente acá: se traen los candidatos SIN
  * filtrar ni ordenar una sola vez, y de ahí en más cada cambio de filtro u
- * orden se aplica en memoria (utils/filtrosCliente.js), sin volver a
+ * orden se aplica en memoria (comun/resultados.js, la misma lógica que usa
+ * el backend), sin volver a
  * pedirle nada al backend.
  *
  * `location.state` esperado: { flujo, parametros, soloUno, filtrosIniciales? }
@@ -192,7 +193,7 @@ export default function PaginaResultados() {
   useMetadatos('resultados');
 
   const { state } = useLocation();
-  const { usuario } = useSesion();
+  const { usuario, cargando: cargandoSesion } = useSesion();
 
   const [modo, setModo] = useState('cargando'); // 'cargando' | 'uno' | 'lista' | 'error'
   const [resultadoUnico, setResultadoUnico] = useState(null);
@@ -389,7 +390,7 @@ export default function PaginaResultados() {
   }, [state, sinLimiteDeEdad]);
 
   const mostrados = useMemo(
-    () => ordenarCliente(aplicarFiltrosCliente(candidatos, filtros), orden),
+    () => ordenar(aplicarFiltros(candidatos, filtros), orden),
     [candidatos, filtros, orden]
   );
   const hayFiltrosActivos = Object.keys(filtros).length > 0;
@@ -433,6 +434,33 @@ export default function PaginaResultados() {
    */
   const aplicaLimiteDeEdad = Boolean(usuario) && tieneLimiteDeEdad(usuario?.fechaNacimiento);
   const franjaPropia = franjaDeEdad(edadCumplida(usuario?.fechaNacimiento));
+
+  /**
+   * QUÉ SE ESTÁ PERDIENDO QUIEN NO TIENE CUENTA, dicho en el único lugar
+   * donde la diferencia es real y se puede comprobar mirando la pantalla.
+   *
+   * Va solo en los flujos con bloques (`FLUJOS_CON_BLOQUES`, o sea las
+   * Opciones 1 y 3) porque son los únicos que arman la búsqueda con
+   * formulario vacío, que es la que cambia de verdad con una cuenta. En el
+   * resto de las pantallas el resultado es el mismo con sesión y sin ella,
+   * así que un aviso ahí sería publicidad y no información.
+   *
+   * EL PROBLEMA QUE VIENE A RESOLVER ES DE VISIBILIDAD, NO DE INCENTIVO.
+   * Hasta acá, el único lugar de toda la app donde se contaba qué agrega una
+   * cuenta era la propia pantalla de crearla, o sea que había que haber
+   * decidido registrarse para enterarse de para qué sirve. Y las listas, que
+   * son lo más vendible, son literalmente invisibles sin sesión, porque
+   * `BotonListas` no dibuja nada (a propósito, y con razón: un "+" muerto en
+   * cada tarjeta de cada grilla es ruido). El resultado es que el 1 del
+   * Definitivo, donde la personalización "cierra el círculo", no existe para
+   * quien todavía no tiene cuenta.
+   *
+   * Se espera a que la sesión resuelva antes de mostrarlo. Sin eso le
+   * aparecería un instante a quien SÍ tiene cuenta, que es a quien menos
+   * sentido tiene mostrárselo.
+   */
+  const invitarACrearCuenta =
+    !usuario && !cargandoSesion && FLUJOS_CON_BLOQUES.has(state?.flujo);
 
   const hayPreferencias = Boolean(
     state?.parametros?.preferencias &&
@@ -720,6 +748,40 @@ export default function PaginaResultados() {
                   </span>
                 </span>
               </label>
+            </div>
+          )}
+
+          {invitarACrearCuenta && (
+            <div className="panel mt-4 p-4">
+              <p className="text-sm text-crema/80">
+                <span className="font-semibold text-crema">
+                  Estas recomendaciones son las mismas para todo el mundo
+                </span>
+                <span className="mt-0.5 block text-crema/60">
+                  Con una cuenta, esta búsqueda arma además secciones con tus géneros y años
+                  favoritos, y con títulos parecidos a los que guardaste. Además, lo que marcás como visto
+                  deja de aparecer.{' '}
+                  <Link to="/crear-cuenta" className="font-semibold text-manteca hover:underline">
+                    Crear cuenta
+                  </Link>
+                  {' o '}
+                  {/*
+                    DICE "iniciar sesión" Y NO "entrar" porque un lector de
+                    pantalla ofrece la lista de enlaces de la página FUERA DE
+                    CONTEXTO, y ahí "entrar, vínculo" no dice a dónde lleva
+                    (verificado en el árbol de accesibilidad de Chrome). Es el
+                    mismo defecto que la 4.25 y la 4.25.1 de las notas de decisiones del proyecto ya
+                    documentaron dos veces, con el botón "x" de los chips y
+                    con el logo del encabezado. De paso coincide con el nombre
+                    que usa el enlace del propio encabezado, así que los dos
+                    caminos al login se llaman igual.
+                  */}
+                  <Link to="/iniciar-sesion" className="font-semibold text-manteca hover:underline">
+                    iniciar sesión
+                  </Link>
+                  .
+                </span>
+              </p>
             </div>
           )}
 

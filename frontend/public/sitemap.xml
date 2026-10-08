@@ -16,8 +16,8 @@
   la fecha del commit que creó este archivo, sin moverse nunca después). La
   regla para la próxima vez: la fecha es la del último commit que cambió
   TEXTO VISIBLE de esa pantalla, no cualquier commit que haya tocado el
-  archivo — un cambio de lógica interna (por ejemplo, el precalentado del
-  cliente) no cuenta. Para /privacidad, /terminos y /accesibilidad
+  archivo — un cambio de lógica interna (por ejemplo, el precalentado de
+  4.13.3) no cuenta. Para /privacidad, /terminos y /accesibilidad
   además tiene que coincidir con FECHA_ACTUALIZACION de
   frontend/src/config/sitio.js, que es la fecha que esas tres páginas
   muestran de verdad en pantalla (es una sola constante compartida, no una

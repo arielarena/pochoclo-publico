@@ -33,8 +33,10 @@ const MENSAJES_POR_ESTADO = {
   429: 'Estás haciendo demasiados pedidos seguidos. Esperá un momento y probá de nuevo.',
 };
 
-const MENSAJE_GENERICO = 'Algo falló de nuestro lado. Probá de nuevo en un momento.';
-const MENSAJE_SIN_RED = 'No pudimos conectarnos con el servidor. Revisá tu conexión e intentá de nuevo.';
+const MENSAJE_GENERICO =
+  'Algo falló de nuestro lado. Probá de nuevo en un momento.';
+const MENSAJE_SIN_RED =
+  'No pudimos conectarnos con el servidor. Intentá de nuevo más tarde.';
 
 /**
  * Todos los errores que salen de acá llevan `estado` con el código HTTP, para
@@ -69,7 +71,10 @@ async function pedirSinCache(path, opciones) {
   const datos = await res.json().catch(() => null);
   if (!res.ok) {
     console.warn(`[api] ${res.status} en ${path}`);
-    throw errorDePedido(datos?.error || MENSAJES_POR_ESTADO[res.status] || MENSAJE_GENERICO, res.status);
+    throw errorDePedido(
+      datos?.error || MENSAJES_POR_ESTADO[res.status] || MENSAJE_GENERICO,
+      res.status,
+    );
   }
   return datos;
 }
@@ -95,7 +100,7 @@ function pedirJson(path, body, method = 'POST', opciones = {}) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     },
-    opciones
+    opciones,
   );
 }
 
@@ -105,7 +110,12 @@ function pedirJson(path, body, method = 'POST', opciones = {}) {
  * búsqueda normal queden iguales que siempre. Las respuestas de lista
  * traen `hayMas`, que dice si el lote siguiente puede aportar algo nuevo.
  */
-function armarQuery({ conSuerte = false, lote = 1, sinLimiteDeEdad = false, soloRapido = false } = {}) {
+function armarQuery({
+  conSuerte = false,
+  lote = 1,
+  sinLimiteDeEdad = false,
+  soloRapido = false,
+} = {}) {
   const params = new URLSearchParams();
   if (conSuerte) params.set('conSuerte', 'true');
   if (lote > 1) params.set('lote', String(lote));
@@ -139,17 +149,29 @@ function armarQuery({ conSuerte = false, lote = 1, sinLimiteDeEdad = false, solo
  * optimización.
  */
 export function obtenerNoSeQueVer(opciones = {}) {
-  return pedir(`/opciones/no-se-que-ver${armarQuery(opciones)}`, {}, { cacheable: !opciones.conSuerte });
+  return pedir(
+    `/opciones/no-se-que-ver${armarQuery(opciones)}`,
+    {},
+    { cacheable: !opciones.conSuerte },
+  );
 }
 
 /** Opción 3. tipo: 'pelicula' | 'miniserie' | 'serie' | 'cualquier-cosa'. */
 export function obtenerPorTipo(tipo, opciones = {}) {
-  return pedir(`/opciones/tipo/${tipo}${armarQuery(opciones)}`, {}, { cacheable: !opciones.conSuerte });
+  return pedir(
+    `/opciones/tipo/${tipo}${armarQuery(opciones)}`,
+    {},
+    { cacheable: !opciones.conSuerte },
+  );
 }
 
 /** Opción 4. clave: una de las keys de ESTADOS_ANIMO del backend. */
 export function obtenerPorEstadoAnimo(clave, opciones = {}) {
-  return pedir(`/opciones/estado-animo/${clave}${armarQuery(opciones)}`, {}, { cacheable: !opciones.conSuerte });
+  return pedir(
+    `/opciones/estado-animo/${clave}${armarQuery(opciones)}`,
+    {},
+    { cacheable: !opciones.conSuerte },
+  );
 }
 
 export function obtenerFicha(tipo, id) {
@@ -180,7 +202,9 @@ export function obtenerSimilaresFicha(tipo, id) {
  * único que se cae al elegir Miniserie o Serie es Película de TV.
  */
 export function obtenerGeneros(tipos) {
-  const query = (tipos ?? []).map((t) => `tipo=${encodeURIComponent(t)}`).join('&');
+  const query = (tipos ?? [])
+    .map((t) => `tipo=${encodeURIComponent(t)}`)
+    .join('&');
   return pedir(`/generos${query ? `?${query}` : ''}`);
 }
 
@@ -202,7 +226,9 @@ export function buscarPersona(q) {
 
 /** Mismo motivo que `obtenerNoSeQueVer` para el `!opciones.conSuerte`. */
 export function buscar(body, opciones = {}) {
-  return pedirJson(`/buscar${armarQuery(opciones)}`, body, 'POST', { cacheable: !opciones.conSuerte });
+  return pedirJson(`/buscar${armarQuery(opciones)}`, body, 'POST', {
+    cacheable: !opciones.conSuerte,
+  });
 }
 
 export function buscarTitulo(q) {
@@ -226,15 +252,18 @@ export function parecidoA(
     conSuerte = false,
     lote = 1,
     sinLimiteDeEdad = false,
-  } = {}
+  } = {},
 ) {
-  return pedirJson(`/parecido-a${armarQuery({ conSuerte, lote, sinLimiteDeEdad })}`, {
-    referencias,
-    preferencias,
-    prioridades,
-    filtros,
-    ordenar,
-  });
+  return pedirJson(
+    `/parecido-a${armarQuery({ conSuerte, lote, sinLimiteDeEdad })}`,
+    {
+      referencias,
+      preferencias,
+      prioridades,
+      filtros,
+      ordenar,
+    },
+  );
 }
 
 /**

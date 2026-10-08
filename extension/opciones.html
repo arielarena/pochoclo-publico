@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Opciones | Pochoclo</title>
+    <link rel="stylesheet" href="opciones.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Pochoclo</h1>
+      <p class="ayuda">
+        Estando en una plataforma de streaming, recomienda un título disponible
+        ahí mismo.
+      </p>
+
+      <section aria-labelledby="t-aparicion">
+        <h2 id="t-aparicion">Cuándo aparece el panel</h2>
+
+        <ul class="plataformas" data-plataformas></ul>
+
+        <p class="aviso" data-aviso role="status"></p>
+
+        <p>
+          Si no se marca ninguna plataforma, el panel de la extensión aparece
+          únicamente cuando apretás el ícono de Pochoclo en la sección de
+          extensiones de la barra del navegador (la sección de extensiones es
+          una pieza de rompecabezas que se encuentra en la parte superior
+          derecha del navegador).
+        </p>
+        <p>
+          Marcando una plataforma, el panel va a aparecer automáticamente al
+          entrar. Para eso Chrome te va a pedir permiso permanente sobre ese
+          sitio, y lo podés sacar cuando quieras destildándola.
+        </p>
+
+        <p class="ayuda">
+          Esto mismo se puede prender y apagar desde la página de extensiones de
+          Chrome, en el acceso a sitios de Pochoclo.
+        </p>
+      </section>
+
+      <section aria-labelledby="t-chrome">
+        <h2 id="t-chrome">En Chrome</h2>
+
+        <p data-fijado></p>
+
+        <p>
+          Chrome no deja que una extensión se fije sola en la barra. Eso, y el
+          resto de sus ajustes, se cambian desde la página de Pochoclo en las
+          extensiones de Chrome.
+        </p>
+
+        <p>
+          <button type="button" class="boton" data-abrir-chrome>
+            Abrir Pochoclo en las extensiones de Chrome
+            <span class="solo-lector">Se abre en una pestaña nueva.</span>
+          </button>
+        </p>
+      </section>
+
+      <section aria-labelledby="t-privacidad">
+        <h2 id="t-privacidad">Qué se manda</h2>
+        <p>
+          Solo se manda el número que identifica a la plataforma. Nunca la
+          dirección de lo que estás mirando, ni el título que tenías en
+          pantalla, ni nada de tu historial.
+        </p>
+        <p>
+          Si iniciaste sesión en
+          <a
+            href="https://pochoclo.ar"
+            target="_blank"
+            rel="noopener noreferrer"
+            >pochoclo.ar</a
+          >
+          en este navegador, la recomendación es la misma que te daría el sitio,
+          con tus Gustos Registrados y sin lo que ya tenés en Visto. Sin sesión
+          funciona igual, sin personalizar.
+        </p>
+      </section>
+
+      <section aria-labelledby="t-creditos">
+        <h2 id="t-creditos">Créditos</h2>
+        <p>
+          Este producto usa la API de TMDb, pero no está respaldado ni
+          certificado por TMDb.
+        </p>
+        <p>
+          <a
+            href="https://www.themoviedb.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="tmdb.svg"
+              alt="The Movie Database"
+              width="123"
+              height="16"
+            />
+          </a>
+        </p>
+      </section>
+    </main>
+
+    <script src="plataformas.js"></script>
+    <script src="opciones.js"></script>
+  </body>
+</html>

@@ -171,7 +171,9 @@ export default function PaginaPrivacidad() {
             </p>
           )}
           <p className="mt-3 leading-relaxed">
-            Esta política describe qué información se procesa al usar el sitio, con qué propósito, con quién
+            Esta política describe qué información se procesa al usar el sitio y su extensión para Chrome
+            (<EnlaceSeccion numero={17} titulo="La extensión de Chrome" texto="la sección 17" />), con qué
+            propósito, con quién
             se comparte, cuánto tiempo se guarda y cómo podés ejercer tus derechos. Se rige por la Ley 25.326
             de Protección de los Datos Personales y sus normas complementarias.
           </p>
@@ -672,6 +674,60 @@ export default function PaginaPrivacidad() {
               Agencia de Acceso a la Información Pública
             </a>
             , que es la autoridad de control en materia de protección de datos personales en la Argentina.
+          </p>
+        </section>
+
+        {/*
+          SECCIÓN 17, LA EXTENSIÓN (2026-10-07). Va al final y no intercalada
+          porque desde la publicación los id="seccion-N" son direcciones
+          públicas. Se publicó antes de que la tienda aprobara la extensión,
+          porque el revisor lee esta página, y por eso la primera oración dice
+          que es opcional y no da por hecho que alguien la tenga.
+
+          Dónde se comprueba cada afirmación: lo único que viaja es el número
+          de proveedor (`unTitulo` en extension/service-worker.js, y el
+          catálogo de dominios en extension/plataformas.js); el backend no
+          registra cuerpos de pedidos (no hay morgan en backend/src/index.js);
+          los permisos están en extension/manifest.json; la única marca en el
+          navegador es MARCA_CERRADO de extension/panel.js; y lo único que se le
+          pide a un tercero es el póster, en `posterEnDataUri`.
+        */}
+        <section id="seccion-17" className="scroll-mt-24">
+          <h2 className="titulo-seccion">17. La extensión de Chrome</h2>
+          <p className="mt-2 leading-relaxed">
+            Pochoclo tiene una extensión para Chrome que, estando en una plataforma de streaming, te
+            recomienda un título disponible ahí mismo. Es opcional, así que si no la instalaste, nada de
+            esta sección te aplica.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            Lo único que la extensión le manda a nuestro servidor es un número que identifica a la
+            plataforma en la que estás, por ejemplo el 8 para Netflix. No le mandamos la dirección de la
+            página que estás viendo, ni el título que tenías en pantalla, ni nada de tu historial de
+            navegación. La traducción de "este dominio es Netflix" al número que le corresponde
+            pasa dentro de la extensión, en tu computadora. Ese número no queda guardado en ninguna parte,
+            porque se usa para armar la búsqueda y se descarta con ella.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            Si tenés la sesión abierta en pochoclo.ar, tu navegador manda la misma cookie de sesión que usa
+            el sitio, así que la recomendación tiene en cuenta tus Gustos Registrados y tus listas. Es
+            exactamente el mismo tratamiento que describe{' '}
+            <EnlaceSeccion numero={5} titulo="Qué hacemos con tus gustos" texto="la sección 5" />, sin
+            ningún dato nuevo. Sin sesión, la extensión funciona igual y de forma anónima.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            Al instalarla no te pide permiso sobre ninguna plataforma de streaming. El único permiso que te
+            pide es sobre api.pochoclo.ar, que es nuestro propio servidor. Si activás que el panel aparezca
+            automáticamente al entrar a una plataforma, Chrome te pide permiso permanente sobre ese sitio, y
+            lo podés sacar cuando quieras desde las opciones de la extensión o desde la página de
+            extensiones de Chrome.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            Lo único que la extensión guarda en tu navegador es, si cerrás el panel en una plataforma, una
+            marca en esa pestaña para no volver a mostrarlo solo, y Chrome la borra al cerrar la pestaña. No
+            usa analítica, y no le habla a ningún servidor que no sea el nuestro. Lo único que le pide a un
+            tercero son las imágenes de los pósters, que salen de TMDb igual que en el sitio (
+            <EnlaceSeccion numero={8} titulo="Terceros: The Movie Database (TMDb)" texto="la sección 8" />
+            ).
           </p>
         </section>
       </div>

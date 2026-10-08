@@ -5,6 +5,7 @@ import ModalTipoBusqueda from '../components/ModalTipoBusqueda.jsx';
 import useMetadatos from '../utils/useMetadatos.js';
 import { obtenerNoSeQueVer } from '../api/cliente.js';
 import { precalentarUnaVez } from '../utils/precalentar.js';
+import { useSesion } from '../auth/ContextoSesion.jsx';
 
 /**
  * Precalienta "No sé qué ver" apenas se monta Inicio, antes de que el
@@ -151,6 +152,23 @@ export default function Inicio() {
   const [modalAbierto, setModalAbierto] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * La línea de abajo de las opciones existe porque hasta acá el inicio no
+   * decía en ningún lado que las cuentas existieran, y el único lugar de la
+   * app donde se explicaba para qué sirven era la pantalla de crearlas.
+   *
+   * ES UNA LÍNEA QUE CUENTA Y NO UNA PREGUNTA QUE PIDE, y va DEBAJO de las
+   * cinco opciones. Esta pantalla está para elegir cómo buscar (sección 5
+   * del Definitivo) y cualquier cosa puesta arriba compite con eso; pedirle
+   * una cuenta a alguien que todavía no vio una sola recomendación es pedir
+   * antes de dar, que es lo contrario del principio de la sección 1.
+   *
+   * Por eso arranca reafirmando que el sitio se usa entero sin cuenta. Sin
+   * esa mitad, el mismo texto se lee como una barrera donde no la hay.
+   */
+  const { usuario, cargando: cargandoSesion } = useSesion();
+  const mostrarInvitacion = !usuario && !cargandoSesion;
+
   useEffect(() => {
     precalentarNoSeQueVer();
   }, []);
@@ -249,6 +267,36 @@ export default function Inicio() {
           )
         )}
       </nav>
+
+      {mostrarInvitacion && (
+        <p className="mt-8 text-center text-sm text-crema/60">
+          Aunque podés usar Pochoclo sin cuenta, crear una te permite guardar tus listas y ver las
+          recomendaciones armadas a partir de tus gustos. Mirá{' '}
+          {/*
+            EL ENLACE ABARCA "cómo funciona" Y NO DECÍA "acá", que es lo que
+            tenía antes. Un lector de pantalla ofrece la lista de enlaces de
+            la página FUERA DE CONTEXTO, y ahí "acá, vínculo" no dice
+            absolutamente nada (verificado en el árbol de accesibilidad de
+            Chrome). Es el mismo defecto que la 4.25 y la 4.25.1 de las notas de decisiones del proyecto
+            documentaron con el botón "x" de los chips y con el logo del
+            encabezado, que tenía como nombre entero su propio `alt`.
+
+            Se fue también "haciendo click" por un motivo aparte, que es que
+            en un teléfono no se hace click, se toca, y el sitio se diseña
+            para los dos (la auditoría de diseño adaptable corre en ocho
+            tamaños, de los cuales cinco son táctiles).
+
+            No se puede tapar con un `aria-label`: WCAG 2.5.3 pide que el
+            nombre accesible contenga al texto visible, así que un enlace que
+            se lee "acá" y se anuncia "cómo funcionan las cuentas" rompe a
+            quien maneja el navegador por voz y dice "hacé clic en acá".
+          */}
+          <Link to="/acerca-de#cuentas" className="font-semibold text-manteca hover:underline">
+            cómo funciona
+          </Link>
+          .
+        </p>
+      )}
 
       {modalAbierto && (
         <ModalTipoBusqueda

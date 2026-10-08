@@ -1,10 +1,15 @@
+import {
+  LARGO_MINIMO_CONTRASENA,
+  LARGO_MAXIMO_CONTRASENA,
+  LARGO_SIN_MEZCLA,
+  REGLAS_CONTRASENA,
+} from '../../../comun/cuenta.js';
+
 /**
  * Requisitos de la contraseña.
  *
- * Espejo de backend/src/auth/validaciones.js. Está duplicado a mano y no
- * compartido porque son dos paquetes separados sin código común, igual que
- * pasa con el formato de correo y con el cálculo de la edad. Si se cambia una
- * lista, cambiar la otra.
+ * Los números y la lista de reglas vienen de comun/cuenta.js, que es lo mismo
+ * que usa backend/src/auth/validaciones.js.
  *
  * LA QUE MANDA ES LA DEL SERVIDOR. Esta existe para dos cosas que el servidor
  * no puede hacer: mostrar los requisitos mientras se escribe, e impedir que el
@@ -26,45 +31,7 @@
  * al enviar, con el mensaje que devuelve el servidor.
  */
 
-export const LARGO_MINIMO_CONTRASENA = 8;
-export const LARGO_MAXIMO_CONTRASENA = 128;
-
-/**
- * A partir de este largo no se exige mezcla de tipos de carácter.
- *
- * El NIST desaconseja obligar a mezclar, porque produce respuestas previsibles
- * ("Password1!") y bloquea frases que son mucho más difíciles de adivinar.
- * Esta exención conserva la exigencia donde sirve (contraseñas cortas) y la
- * saca donde estorba.
- */
-export const LARGO_SIN_MEZCLA = 16;
-
-export const REGLAS_CONTRASENA = [
-  {
-    clave: 'largo',
-    etiqueta: `Al menos ${LARGO_MINIMO_CONTRASENA} caracteres`,
-    cumple: (v) => v.length >= LARGO_MINIMO_CONTRASENA,
-    cuandoAplica: () => true,
-  },
-  {
-    clave: 'letra',
-    etiqueta: 'Una letra',
-    cumple: (v) => /\p{L}/u.test(v),
-    cuandoAplica: (v) => v.length < LARGO_SIN_MEZCLA,
-  },
-  {
-    clave: 'numero',
-    etiqueta: 'Un número',
-    cumple: (v) => /\p{N}/u.test(v),
-    cuandoAplica: (v) => v.length < LARGO_SIN_MEZCLA,
-  },
-  {
-    clave: 'especial',
-    etiqueta: 'Un símbolo (por ejemplo . , - _ ! ? @ #)',
-    cumple: (v) => /[^\p{L}\p{N}]/u.test(v),
-    cuandoAplica: (v) => v.length < LARGO_SIN_MEZCLA,
-  },
-];
+export { LARGO_MINIMO_CONTRASENA, LARGO_MAXIMO_CONTRASENA, LARGO_SIN_MEZCLA, REGLAS_CONTRASENA };
 
 /**
  * Estado de cada regla para un valor dado. Solo devuelve las reglas que

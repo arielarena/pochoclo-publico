@@ -26,10 +26,46 @@ function Sesion() {
   const { pathname } = useLocation();
 
   /**
-   * Mientras se resuelve la sesión no se muestra nada, para no hacer
-   * parpadear un "Iniciar sesión" en la cara de alguien que ya está adentro.
+   * Mientras se resuelve la sesión no se muestra el contenido real, para no
+   * hacer parpadear un "Iniciar sesión" en la cara de alguien que ya está
+   * adentro. Lo que sí se muestra es el lugar que va a ocupar, porque la
+   * espera no es corta y antes acá no había nada.
+   *
+   * CUÁNTO SE ESPERA, medido contra producción el 2026-09-22. El pedido de
+   * sesión recién sale a los ~330 ms, cuando este componente monta (el
+   * navegador no sabe que existe hasta ejecutar el bundle), la red hasta la
+   * API son ~155 ms, y con una cookie encima hay que validar el token contra
+   * la tabla `session` de Neon, en San Pablo. Ese último tramo es el caro y
+   * el que se nota: el primer pedido que toca la base tarda entre 1,0 y 2,2 s
+   * (el pool de `pg` cierra sus conexiones a los 10 s, que es el valor por
+   * omisión que `config/db.js` no declara) y si además el cómputo está
+   * suspendido, a los 5 minutos de ocio, se suma su arranque. O sea que el
+   * peor caso del nombre ronda los 2,7 s contra los 0,37 del imagotipo, que
+   * es exactamente el síntoma reportado.
+   *
+   * ES UNA BARRITA SOLA Y NO DOS, aunque con sesión abierta aparezcan dos
+   * enlaces ("Mis listas" y el nombre). Mientras se espera no se sabe si hay
+   * cuenta, así que cualquier tamaño que se elija miente a alguien, y lo que
+   * decide a quién es el tráfico: hoy la base tiene 3 cuentas, o sea que
+   * quien llega sin sesión y va a ver un solo "Iniciar sesión" es la enorme
+   * mayoría. Dos barritas le prometerían a casi todo el mundo el doble de lo
+   * que van a recibir.
+   *
+   * De ahí también sale el ancho. `5.625rem` son los 89,5 px que mide
+   * "Iniciar sesión" en `text-sm font-semibold` (medido en Chrome a 320, 360,
+   * 414, 768 y 1280, idéntico en los cinco porque no envuelve), así que en el
+   * caso mayoritario el hueco queda exacto y el header ya no salta. Antes era
+   * `w-16`, o sea 64 px, y faltaban 25. Va en `rem` y no en píxeles para que
+   * escale junto con el texto, que es `0.875rem`, si alguien agrandó la
+   * tipografía del navegador.
+   *
+   * El `h-6` es el `min-h-6` de los enlaces reales (WCAG 2.5.8) y no cambia
+   * el alto de la barra, que lo fija el imagotipo con sus 40 px. La clase
+   * `esqueleto` ya trae el barrido y ya se apaga con
+   * `prefers-reduced-motion`, así que no hay animación nueva que cuidar.
    */
-  if (cargando) return <span className="w-16" aria-hidden="true" />;
+  if (cargando)
+    return <span className="esqueleto inline-block h-6 w-[5.625rem] rounded" aria-hidden="true" />;
 
   if (!usuario) {
     return (

@@ -5,7 +5,7 @@
  * pedido. Pensado para llamadas a APIs externas que no tienen por qué
  * repetirse dos veces en la misma ráfaga.
  *
- * El caso que lo motivó: `buscarConDivisiones` (prioridades, ver las notas de decisiones del proyecto
+ * El caso que lo motivó: `buscarConDivisiones` (prioridades, ver
  * 4.20) corre hasta 5 búsquedas casi idénticas en paralelo (difieren en una
  * sola categoría descartada), así que la mayoría piden las mismas
  * especificaciones de `/discover` y el mismo detalle de los mismos

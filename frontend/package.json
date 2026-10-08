@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clases": "node comprobar-clases.mjs"
   },
   "dependencies": {
     "better-auth": "^1.7.1",
